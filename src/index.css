@@ -1,0 +1,33 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap');
+
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+* {
+   font-family: "Manrope", sans-serif;
+   font-weight: 500;
+}
+
+:root {
+  --color-primary: #4169E1; /* Royal Blue */
+  --color-secondary: #D4AF37; /* Gold */
+  --color-accent: #FFFFFF; /* White */
+  --color-detail: #000000; /* Black / details */
+}
+
+.dark {
+  --color-accent: #FFFFFF;
+  /* keep primary and secondary same in dark mode */
+}
+
+/* Utility shortcuts that map to brand variables */
+.bg-primary { background-color: var(--color-primary) !important; }
+.text-primary { color: var(--color-primary) !important; }
+.bg-secondary { background-color: var(--color-secondary) !important; }
+.text-secondary { color: var(--color-secondary) !important; }
+.text-accent { color: var(--color-accent) !important; }
+.bg-accent { background-color: var(--color-accent) !important; }
+.text-detail { color: var(--color-detail) !important; }
+.border-primary { border-color: var(--color-primary) !important; }
+.hover\:bg-primary:hover { background-color: var(--color-primary) !important; }
