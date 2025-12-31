@@ -38,10 +38,13 @@ const Hero = () => {
         </p>
 
         {/* Buttons */}
-        <div className='flex flex-col sm:flex-row gap-4 mt-4'>
-          <button className='px-8 py-4 bg-primary text-accent font-semibold rounded-lg hover:opacity-95 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1'>
-            Explore
-          </button>
+      <div className='flex flex-col sm:flex-row gap-4 mt-4'>
+  <a 
+    href='#about' 
+    className='px-8 py-4 bg-primary text-accent font-semibold rounded-lg hover:opacity-95 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 text-center'
+  >
+    Explore
+  </a>
           
         </div>
       </div>
