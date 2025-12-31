@@ -32,6 +32,7 @@ import sun_icon from "./sun_icon.svg";
 import moon_icon from "./moon_icon.svg";
 import img_3I5A9345 from "./3I5A9345.jpg";
 import img_8868 from "./IMG_8868.JPG";
+import ONLINE_PLATFORM from "./ONLINE_PLATFORM.jpg";
 
 export const company_logos = [
   microsoft_logo,
@@ -71,6 +72,7 @@ const assets = {
   moon_icon,
   img_3I5A9345,
   img_8868,
+  ONLINE_PLATFORM,
 };
 
 export default assets;
