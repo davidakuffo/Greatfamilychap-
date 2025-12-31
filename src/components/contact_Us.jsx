@@ -203,7 +203,7 @@ const Contact_Us = () => {
             {/* Map */}
             <div className='bg-gray-200 dark:bg-gray-700 rounded-xl overflow-hidden h-96'>
               <iframe
-                src='https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3970.8267023606887!2d-0.1969806!3d5.603716999999999!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xfdf9084b2b7a773%3A0xbed14ed8650e2dd3!2sAccra%2C%20Ghana!5e0!3m2!1sen!2sus!4v1234567890'
+                src='https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3267.1271964008183!2d-0.12078292601520796!3d5.687125594294535!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xfdf83026e0aa0b3%3A0x5ea2f3423a267ea7!2sGreat%20Family%20Church%20Nanakrom!5e1!3m2!1sen!2sgh!4v1767171463808!5m2!1sen!2sgh" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade'
                 width='100%'
                 height='100%'
                 style={{ border: 0 }}
