@@ -105,11 +105,6 @@ const Services = () => {
                   <p className='text-gray-700 dark:text-gray-300 leading-relaxed mb-6'>
                     {service.description}
                   </p>
-
-                  {/* Button */}
-                  <button className='w-full px-6 py-3 bg-primary text-accent font-semibold rounded-lg hover:opacity-95 transition-all duration-300'>
-                    Learn More
-                  </button>
                 </div>
               </div>
             )

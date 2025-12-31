@@ -5,6 +5,15 @@ import ThemeToggleBtn from './ThemeToggleBtn'
 const Navbar = ({theme, setTheme}) => {
 
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const isDonatePage = typeof window !== 'undefined' && window.location.pathname === '/donate'
+
+  const handleNavClick = (anchor) => {
+    setSidebarOpen(false)
+    if (isDonatePage) {
+      // Navigate to home page with anchor
+      window.location.href = `/${anchor}`
+    }
+  }
 
   return (
     <div className='flex justify-between items-center px-4 sm:px-12 lg:px-40 py-2 sticky top-0 z-20 backdrop-blur-xl font-medium bg-white/50 dark:bg-gray-900/70'>
@@ -15,11 +24,11 @@ const Navbar = ({theme, setTheme}) => {
 
       <img src={assets.close_icon} alt='' className='w-5 absolute right-4 top-4 sm:hidden'onClick={()=> setSidebarOpen(false)}/>
 
-      <a onClick={()=>setSidebarOpen(false)} href='#hero' className='sm:hover:border-b'>Home</a>
-      <a onClick={()=>setSidebarOpen(false)} href='#about' className='sm:hover:border-b'>About Us</a>
-      <a onClick={()=>setSidebarOpen(false)} href='#events' className='sm:hover:border-b'>Events</a>
-      <a onClick={()=>setSidebarOpen(false)} href='#services' className='sm:hover:border-b'>Services</a>
-      <a onClick={()=>setSidebarOpen(false)} href='#contact' className='sm:hover:border-b'>Contact Us</a>
+      <a onClick={() => handleNavClick('#hero')} href={isDonatePage ? '/#hero' : '#hero'} className='sm:hover:border-b'>Home</a>
+      <a onClick={() => handleNavClick('#about')} href={isDonatePage ? '/#about' : '#about'} className='sm:hover:border-b'>About Us</a>
+      <a onClick={() => handleNavClick('#events')} href={isDonatePage ? '/#events' : '#events'} className='sm:hover:border-b'>Events</a>
+      <a onClick={() => handleNavClick('#services')} href={isDonatePage ? '/#services' : '#services'} className='sm:hover:border-b'>Services</a>
+      <a onClick={() => handleNavClick('#contact')} href={isDonatePage ? '/#contact' : '#contact'} className='sm:hover:border-b'>Contact Us</a>
     </div>
 
     <div className='flex items-center gap-2 sm:gap-4'>

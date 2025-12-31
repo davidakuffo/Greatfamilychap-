@@ -204,6 +204,25 @@ const Events = () => {
     });
   };
 
+  const getMinDate = () => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    return today.toISOString().split('T')[0];
+  };
+
+  const getMaxDate = () => {
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+    tomorrow.setHours(0, 0, 0, 0);
+    return tomorrow.toISOString().split('T')[0];
+  };
+
+  const getDateRangeDisplay = () => {
+    const min = new Date(getMinDate());
+    const max = new Date(getMaxDate());
+    return `${min.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} - ${max.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`;
+  };
+
   // Admin Login UI
   if (!isAdmin) {
     return (
@@ -278,10 +297,6 @@ const Events = () => {
                       <span className='text-sm'>{event.location}</span>
                     </div>
                   </div>
-
-                  <button className='w-full mt-6 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 rounded-lg transition-colors duration-300'>
-                    Register Now
-                  </button>
                 </div>
               </div>
             ))}
@@ -340,13 +355,17 @@ const Events = () => {
                   className='px-4 py-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-primary'
                   required
                 />
-                <input
-                  type='date'
-                  value={newEvent.date}
-                  onChange={(e) => setNewEvent({...newEvent, date: e.target.value})}
-                  className='px-4 py-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-primary'
-                  required
-                />
+                <div>
+                  <input
+                    type='date'
+                    value={newEvent.date}
+                    onChange={(e) => setNewEvent({...newEvent, date: e.target.value})}
+                    min={getMinDate()}
+                    className='w-full px-4 py-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-primary'
+                    required
+                  />
+                  <p className='text-xs text-gray-500 dark:text-gray-400 mt-1'>Event dates must be from today onwards</p>
+                </div>
                 <input
                   type='text'
                   placeholder='Time (e.g., 9:00 AM) *'

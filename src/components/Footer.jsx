@@ -2,12 +2,13 @@ import React from 'react'
 
 const Footer = () => {
   const currentYear = new Date().getFullYear()
+  const isDonatePage = typeof window !== 'undefined' && window.location.pathname === '/donate'
 
   const quickLinks = [
-    { name: 'Home', href: '#hero' },
-    { name: 'About Us', href: '#about' },
-    { name: 'Services', href: '#services' },
-    { name: 'Contact', href: '#contact' }
+    { name: 'Home', href: isDonatePage ? '/#hero' : '#hero' },
+    { name: 'About Us', href: isDonatePage ? '/#about' : '#about' },
+    { name: 'Services', href: isDonatePage ? '/#services' : '#services' },
+    { name: 'Contact', href: isDonatePage ? '/#contact' : '#contact' }
   ]
 
   const ministries = [
