@@ -200,19 +200,6 @@ const Contact_Us = () => {
 
           {/* Map and Additional Info */}
           <div className='space-y-6'>
-            {/* Map */}
-            <div className='bg-gray-200 dark:bg-gray-700 rounded-xl overflow-hidden h-96'>
-              <iframe
-                src='https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3267.1271964008183!2d-0.12078292601520796!3d5.687125594294535!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xfdf83026e0aa0b3%3A0x5ea2f3423a267ea7!2sGreat%20Family%20Church%20Nanakrom!5e1!3m2!1sen!2sgh!4v1767171463808!5m2!1sen!2sgh" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade'
-                width='100%'
-                height='100%'
-                style={{ border: 0 }}
-                allowFullScreen=''
-                loading='lazy'
-                title='Church Location'
-              ></iframe>
-            </div>
-
             {/* Social Media */}
             <div className='bg-gray-50 dark:bg-gray-700 p-8 rounded-xl'>
   <h4 className='text-xl font-bold text-gray-900 dark:text-white mb-4'>
@@ -249,6 +236,20 @@ const Contact_Us = () => {
     </a>
   </div>
 </div>
+            {/* Map */}
+            <div className='bg-gray-200 dark:bg-gray-700 rounded-xl overflow-hidden h-96'>
+              <iframe
+                src='https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3267.1271964008183!2d-0.12078292601520796!3d5.687125594294535!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xfdf83026e0aa0b3%3A0x5ea2f3423a267ea7!2sGreat%20Family%20Church%20Nanakrom!5e1!3m2!1sen!2sgh!4v1767171463808!5m2!1sen!2sgh" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade'
+                width='100%'
+                height='100%'
+                style={{ border: 0 }}
+                allowFullScreen=''
+                loading='lazy'
+                title='Church Location'
+              ></iframe>
+            </div>
+
+            
           </div>
         </div>
       </div>
