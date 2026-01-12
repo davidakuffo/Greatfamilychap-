@@ -20,11 +20,13 @@ const About_Us = () => {
         <div className='grid md:grid-cols-2 gap-12 items-center mb-16'>
           {/* Image */}
           <div className='order-2 md:order-1'>
-            <img 
-              src={assets.img_3I5A9345}
-              alt='Church Community'
-              className='rounded-lg shadow-xl w-full h-auto object-cover'
-            />
+            <div className='relative overflow-hidden rounded-lg shadow-xl aspect-[4/3]'>
+              <img 
+                src={assets.Papa}
+                alt='Church Community'
+                className='w-full h-full object-cover hover:scale-105 transition-transform duration-500'
+              />
+            </div>
           </div>
 
           {/* Text Content */}

@@ -7,6 +7,10 @@ const Events = () => {
   const [adminPassword, setAdminPassword] = useState('');
   const [events, setEvents] = useState([]);
   const [showNewEventForm, setShowNewEventForm] = useState(false);
+  const [dateRange, setDateRange] = useState ({
+    startDate: '',
+    endDate: ''
+  });
   const [newEvent, setNewEvent] = useState({
     title: '',
     date: '',

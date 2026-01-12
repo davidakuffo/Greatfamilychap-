@@ -138,6 +138,17 @@ const Services = () => {
   </svg>
   TikTok
 </a>
+<a 
+          href='https://www.radio.com' 
+          target='_blank' 
+          rel='noopener noreferrer' 
+          className='flex items-center gap-3 px-8 py-4 bg-primary text-white font-semibold rounded-lg hover:bg-purple-700 transition-all duration-300 shadow-lg'
+        >
+          <svg className='w-6 h-6' fill='currentColor' viewBox='0 0 24 24'>
+            <path d='M20 6h-8l8-6v6zm0 2v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2zm-8 4a3 3 0 1 0 0 6 3 3 0 0 0 0-6zm0 2a1 1 0 1 1 0 2 1 1 0 0 1 0-2zM7 12a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm10 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z'/>
+          </svg>
+          Radio
+        </a>
           </div>
         </div>
       </div>
