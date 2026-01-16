@@ -125,26 +125,6 @@ const Footer = () => {
         </div>
       </div>
 
-      {/* Service Times Bar */}
-      <div className='bg-gray-800 py-6'>
-        <div className='max-w-7xl mx-auto px-4 sm:px-12 lg:px-24 xl:px-40'>
-          <div className='flex flex-col md:flex-row justify-between items-center gap-4 text-center md:text-left'>
-            <div>
-              <p className='text-white font-semibold mb-1'>Tuesday Prayer & Bible Study</p>
-              <p className='text-gray-400 text-sm'>7:00 PM - 9:00 PM</p>
-            </div>
-            <div>
-              <p className='text-white font-semibold mb-1'>Friday Revival Service</p>
-              <p className='text-gray-400 text-sm'>6:00 PM - 8:30 PM</p>
-            </div>
-            <div>
-              <p className='text-white font-semibold mb-1'>Sunday Worship Service</p>
-              <p className='text-gray-400 text-sm'>9:00 AM - 12:00 PM</p>
-            </div>
-          </div>
-        </div>
-      </div>
-
       {/* Bottom Bar */}
       <div className='bg-gray-950 py-6'>
         <div className='max-w-7xl mx-auto px-4 sm:px-12 lg:px-24 xl:px-40'>
