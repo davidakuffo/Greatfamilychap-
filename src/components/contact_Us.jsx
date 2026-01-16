@@ -31,7 +31,7 @@ const Contact_Us = () => {
           'Accept': 'application/json'
         },
         body: JSON.stringify({
-          access_key: '9b8ad355-12a1-4777-9221-e7c44b0df6f6', // Replace with your Web3Forms access key
+          access_key: 'YOUR_ACCESS_KEY_HERE', // Replace with your Web3Forms access key
           name: formData.name,
           email: formData.email,
           phone: formData.phone,
@@ -72,8 +72,8 @@ const Contact_Us = () => {
         </svg>
       ),
       title: 'Address',
-      info: '123 Faith Street, Accra',
-      subInfo: 'Greater Accra, Ghana'
+      info: '84 Adejetey Katamanso Ave',
+      subInfo: 'Ashaley Botwe-Nanakrom behind the Melcom'
     },
     {
       icon: (
@@ -82,8 +82,7 @@ const Contact_Us = () => {
         </svg>
       ),
       title: 'Phone',
-      info: '+233 24 123 4567',
-      subInfo: '+233 20 987 6543'
+      info: '+233595227711',
     },
     {
       icon: (
@@ -93,7 +92,6 @@ const Contact_Us = () => {
       ),
       title: 'Email',
       info: 'info@greatfamilychapel.org',
-      subInfo: 'prayer@greatfamilychapel.org'
     },
     {
       icon: (
@@ -102,8 +100,7 @@ const Contact_Us = () => {
         </svg>
       ),
       title: 'Office Hours',
-      info: 'Mon - Fri: 9:00 AM - 5:00 PM',
-      subInfo: 'Sat: 10:00 AM - 2:00 PM'
+      info: 'Mon - Fri: 9:00 AM - 4:00 PM',
     }
   ]
 
@@ -126,20 +123,30 @@ const Contact_Us = () => {
           {contactInfo.map((item, index) => (
             <div 
               key={index}
-              className='bg-gray-50 dark:bg-gray-700 p-6 rounded-lg text-center hover:shadow-xl transition-all duration-300 hover:-translate-y-2'
+              className='group relative bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-800 p-8 rounded-2xl text-center hover:shadow-2xl transition-all duration-500 hover:-translate-y-3 border border-gray-200 dark:border-gray-600 overflow-hidden'
             >
-              <div className='w-16 h-16 bg-primary text-accent rounded-full flex items-center justify-center mx-auto mb-4'>
-                {item.icon}
+              {/* Animated background gradient */}
+              <div className='absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500'></div>
+              
+              {/* Icon with animated ring */}
+              <div className='relative w-20 h-20 mx-auto mb-6'>
+                <div className='absolute inset-0 bg-primary/10 rounded-full animate-pulse group-hover:scale-110 transition-transform duration-500'></div>
+                <div className='relative w-20 h-20 bg-gradient-to-br from-gray-800 to-gray-900 dark:from-primary dark:to-primary/80 text-white dark:text-accent rounded-full flex items-center justify-center shadow-lg group-hover:shadow-2xl group-hover:scale-110 transition-all duration-500'>
+                  {item.icon}
+                </div>
               </div>
-              <h4 className='text-lg font-bold text-gray-900 dark:text-white mb-2'>
+              
+              <h4 className='text-xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-primary dark:group-hover:text-accent transition-colors duration-300'>
                 {item.title}
               </h4>
-              <p className='text-gray-700 dark:text-gray-300 text-sm mb-1'>
+              <p className='text-gray-700 dark:text-gray-300 text-base font-medium mb-2 leading-relaxed'>
                 {item.info}
               </p>
-              <p className='text-gray-600 dark:text-gray-400 text-sm'>
-                {item.subInfo}
-              </p>
+              {item.subInfo && (
+                <p className='text-gray-600 dark:text-gray-400 text-sm'>
+                  {item.subInfo}
+                </p>
+              )}
             </div>
           ))}
         </div>
