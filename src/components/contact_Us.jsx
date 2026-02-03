@@ -91,7 +91,7 @@ const Contact_Us = () => {
         </svg>
       ),
       title: 'Email',
-      info: 'info@greatfamilychapel.org',
+      info: 'greatfamilychapel@gmail.com',
     },
     {
       icon: (
@@ -139,7 +139,7 @@ const Contact_Us = () => {
               <h4 className='text-xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-primary dark:group-hover:text-accent transition-colors duration-300'>
                 {item.title}
               </h4>
-              <p className='text-gray-700 dark:text-gray-300 text-base font-medium mb-2 leading-relaxed'>
+              <p className='text-gray-700 dark:text-gray-300 text-base font-medium mb-2 leading-relaxed break-words whitespace-normal max-w-full'>
                 {item.info}
               </p>
               {item.subInfo && (

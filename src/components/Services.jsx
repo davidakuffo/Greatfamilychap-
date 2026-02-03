@@ -29,7 +29,7 @@ const Services = () => {
     },
     {
       day: 'Sunday',
-      title: 'Main Worship Service',
+      title: 'Destiny Encounter Service',
       time: '9:00 AM - 12:00 PM',
       description: 'Our main Sunday service featuring vibrant worship, inspiring preaching, and fellowship. Bring the whole family for a powerful time in God\'s presence.',
       icon: (
