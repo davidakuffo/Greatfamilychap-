@@ -5,9 +5,9 @@ import assets from './assets/assets'
 
 const Donate = ({ theme, setTheme }) => {
   return (
-    <div className='min-h-screen flex flex-col bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800'>
+    <div className='min-h-screen flex flex-col bg-linear-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800'>
       <Navbar theme={theme} setTheme={setTheme} />
-      <main className='flex-grow flex items-center justify-center py-12 px-4'>
+      <main className='grow flex items-center justify-center py-12 px-4'>
         <div className='max-w-5xl w-full'>
           <div className='text-center mb-8'>
             <h1 className='text-4xl font-bold text-primary mb-4'>Support Great Family Chapel</h1>

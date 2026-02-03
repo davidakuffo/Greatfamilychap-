@@ -123,15 +123,15 @@ const Contact_Us = () => {
           {contactInfo.map((item, index) => (
             <div 
               key={index}
-              className='group relative bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-800 p-8 rounded-2xl text-center hover:shadow-2xl transition-all duration-500 hover:-translate-y-3 border border-gray-200 dark:border-gray-600 overflow-hidden'
+              className='group relative bg-linear-to-br from-gray-50 to-gray-100 dark:from-gray-700 dark:to-gray-800 p-8 rounded-2xl text-center hover:shadow-2xl transition-all duration-500 hover:-translate-y-3 border border-gray-200 dark:border-gray-600 overflow-hidden'
             >
               {/* Animated background gradient */}
-              <div className='absolute inset-0 bg-gradient-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500'></div>
+              <div className='absolute inset-0 bg-linear-to-br from-primary/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500'></div>
               
               {/* Icon with animated ring */}
               <div className='relative w-20 h-20 mx-auto mb-6'>
                 <div className='absolute inset-0 bg-primary/10 rounded-full animate-pulse group-hover:scale-110 transition-transform duration-500'></div>
-                <div className='relative w-20 h-20 bg-gradient-to-br from-gray-800 to-gray-900 dark:from-primary dark:to-primary/80 text-white dark:text-accent rounded-full flex items-center justify-center shadow-lg group-hover:shadow-2xl group-hover:scale-110 transition-all duration-500'>
+                <div className='relative w-20 h-20 bg-linear-to-br from-gray-800 to-gray-900 dark:from-primary dark:to-primary/80 text-white dark:text-accent rounded-full flex items-center justify-center shadow-lg group-hover:shadow-2xl group-hover:scale-110 transition-all duration-500'>
                   {item.icon}
                 </div>
               </div>
@@ -139,7 +139,7 @@ const Contact_Us = () => {
               <h4 className='text-xl font-bold text-gray-900 dark:text-white mb-3 group-hover:text-primary dark:group-hover:text-accent transition-colors duration-300'>
                 {item.title}
               </h4>
-              <p className='text-gray-700 dark:text-gray-300 text-base font-medium mb-2 leading-relaxed break-words whitespace-normal max-w-full'>
+              <p className='text-gray-700 dark:text-gray-300 text-base font-medium mb-2 leading-relaxed wrap-break-word whitespace-normal max-w-full'>
                 {item.info}
               </p>
               {item.subInfo && (

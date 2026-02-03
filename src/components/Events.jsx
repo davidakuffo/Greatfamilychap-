@@ -235,7 +235,7 @@ const Events = () => {
   // Admin Login UI
   if (!isAdmin) {
     return (
-      <div id='events' className='py-20 px-4 sm:px-12 lg:px-24 xl:px-40 bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800 min-h-screen'>
+      <div id='events' className='py-20 px-4 sm:px-12 lg:px-24 xl:px-40 bg-linear-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800 min-h-screen'>
         <div className='max-w-7xl mx-auto'>
           <div className='text-center mb-12'>
             <h2 className='text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white mb-4'>
@@ -277,7 +277,7 @@ const Events = () => {
                   </div>
                 )}
                 
-                <div className={`${event.image ? 'bg-gradient-to-r from-blue-500 to-purple-600 p-6' : 'bg-gradient-to-r from-blue-500 to-purple-600 p-6'} text-white`}>
+                <div className={`${event.image ? 'bg-linear-to-r from-blue-500 to-purple-600 p-6' : 'bg-linear-to-r from-blue-500 to-purple-600 p-6'} text-white`}>
                   <h3 className='text-2xl font-bold mb-2'>{event.title}</h3>
                   <div className='flex items-center gap-2 text-blue-50'>
                     <Users size={16} />
@@ -292,17 +292,17 @@ const Events = () => {
                   
                   <div className='space-y-3'>
                     <div className='flex items-start gap-3 text-gray-700 dark:text-gray-300'>
-                      <Calendar className='flex-shrink-0 mt-1 text-blue-600 dark:text-blue-400' size={18} />
+                      <Calendar className='shrink-0 mt-1 text-blue-600 dark:text-blue-400' size={18} />
                       <span className='text-sm'>{formatDate(event.date)}</span>
                     </div>
                     
                     <div className='flex items-start gap-3 text-gray-700 dark:text-gray-300'>
-                      <Clock className='flex-shrink-0 mt-1 text-blue-600 dark:text-blue-400' size={18} />
+                      <Clock className='shrink-0 mt-1 text-blue-600 dark:text-blue-400' size={18} />
                       <span className='text-sm'>{event.time}</span>
                     </div>
                     
                     <div className='flex items-start gap-3 text-gray-700 dark:text-gray-300'>
-                      <MapPin className='flex-shrink-0 mt-1 text-blue-600 dark:text-blue-400' size={18} />
+                      <MapPin className='shrink-0 mt-1 text-blue-600 dark:text-blue-400' size={18} />
                       <span className='text-sm'>{event.location}</span>
                     </div>
                   </div>
@@ -325,7 +325,7 @@ const Events = () => {
 
   // Admin Dashboard
   return (
-    <div id='events' className='py-20 px-4 sm:px-12 lg:px-24 xl:px-40 bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800 min-h-screen'>
+    <div id='events' className='py-20 px-4 sm:px-12 lg:px-24 xl:px-40 bg-linear-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800 min-h-screen'>
       <div className='max-w-7xl mx-auto'>
         {/* Admin Header */}
         <div className='flex justify-between items-center mb-12'>

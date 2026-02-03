@@ -20,7 +20,7 @@ const About_Us = () => {
         <div className='grid md:grid-cols-2 gap-12 items-center mb-16'>
           {/* Image */}
           <div className='order-2 md:order-1'>
-            <div className='relative overflow-hidden rounded-lg shadow-xl aspect-[4/3]'>
+            <div className='relative overflow-hidden rounded-lg shadow-xl aspect-4/3'>
               <img 
                 src={assets.Papa}
                 alt='Church Community'
