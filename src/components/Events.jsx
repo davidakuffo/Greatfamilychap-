@@ -103,11 +103,18 @@ const Events = () => {
     { id: 'special', label: 'Special Events' }
   ];
 
-  // Load events from localStorage on mount
+  // Load events from localStorage on mount (with safe parsing)
   useEffect(() => {
     const savedEvents = localStorage.getItem('gfc_events');
     if (savedEvents) {
-      setEvents(JSON.parse(savedEvents));
+      try {
+        const parsed = JSON.parse(savedEvents);
+        setEvents(Array.isArray(parsed) ? parsed : defaultEvents);
+      } catch (err) {
+        // Malformed data — reset to defaults
+        setEvents(defaultEvents);
+        localStorage.setItem('gfc_events', JSON.stringify(defaultEvents));
+      }
     } else {
       setEvents(defaultEvents);
       localStorage.setItem('gfc_events', JSON.stringify(defaultEvents));
@@ -133,11 +140,9 @@ const Events = () => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  // Save events to localStorage whenever they change
+  // Save events to localStorage whenever they change (including when the list becomes empty)
   useEffect(() => {
-    if (events.length > 0) {
-      localStorage.setItem('gfc_events', JSON.stringify(events));
-    }
+    localStorage.setItem('gfc_events', JSON.stringify(events));
   }, [events]);
 
   const handleAdminLogin = (e) => {

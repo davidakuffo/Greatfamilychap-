@@ -4,8 +4,8 @@ const Services = () => {
   const services = [
     {
       day: 'Tuesday',
-      title: 'Prayer & Bible Study',
-      time: '7:00 PM - 9:00 PM',
+      title: 'Commanding The Morning',
+      time: '6:00 AM - 8:00 AM',
       description: 'Join us for an evening of powerful prayer, in-depth Bible study, and spiritual growth. A time to deepen your understanding of God\'s Word.',
       icon: (
         <svg className='w-12 h-12' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
