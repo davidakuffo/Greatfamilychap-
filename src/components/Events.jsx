@@ -13,7 +13,8 @@ const Events = () => {
   });
   const [newEvent, setNewEvent] = useState({
     title: '',
-    date: '',
+    startDate: '',
+    endDate: '',
     time: '',
     location: '',
     category: 'worship',
@@ -28,7 +29,8 @@ const Events = () => {
     {
       id: 1,
       title: 'Sunday Worship Service',
-      date: '2025-01-05',
+      startDate: '2025-01-05',
+      endDate: '2025-01-05',
       time: '9:00 AM & 11:00 AM',
       location: 'Main Sanctuary',
       category: 'worship',
@@ -39,7 +41,8 @@ const Events = () => {
     {
       id: 2,
       title: 'Youth Night',
-      date: '2025-01-10',
+      startDate: '2025-01-10',
+      endDate: '2025-01-10',
       time: '6:00 PM',
       location: 'Youth Center',
       category: 'youth',
@@ -50,7 +53,8 @@ const Events = () => {
     {
       id: 3,
       title: 'Prayer Meeting',
-      date: '2025-01-12',
+      startDate: '2025-01-12',
+      endDate: '2025-01-12',
       time: '7:00 PM',
       location: 'Prayer Room',
       category: 'prayer',
@@ -61,7 +65,8 @@ const Events = () => {
     {
       id: 4,
       title: 'Community Outreach',
-      date: '2025-01-15',
+      startDate: '2025-01-15',
+      endDate: '2025-01-15',
       time: '10:00 AM',
       location: 'City Center',
       category: 'outreach',
@@ -72,7 +77,8 @@ const Events = () => {
     {
       id: 5,
       title: 'Bible Study',
-      date: '2025-01-17',
+      startDate: '2025-01-17',
+      endDate: '2025-01-17',
       time: '7:30 PM',
       location: 'Fellowship Hall',
       category: 'study',
@@ -83,7 +89,8 @@ const Events = () => {
     {
       id: 6,
       title: 'Women\'s Conference',
-      date: '2025-01-20',
+      startDate: '2025-01-20',
+      endDate: '2025-01-20',
       time: '9:00 AM',
       location: 'Main Sanctuary',
       category: 'special',
@@ -109,7 +116,12 @@ const Events = () => {
     if (savedEvents) {
       try {
         const parsed = JSON.parse(savedEvents);
-        setEvents(Array.isArray(parsed) ? parsed : defaultEvents);
+        const normalized = Array.isArray(parsed) ? parsed.map(ev => ({
+          ...ev,
+          startDate: ev.startDate || ev.date || '',
+          endDate: ev.endDate || ev.date || ev.startDate || ''
+        })) : defaultEvents;
+        setEvents(normalized);
       } catch (err) {
         // Malformed data — reset to defaults
         setEvents(defaultEvents);
@@ -158,18 +170,24 @@ const Events = () => {
 
   const handleAddEvent = (e) => {
     e.preventDefault();
-    if (!newEvent.title || !newEvent.date || !newEvent.time || !newEvent.location) {
+    if (!newEvent.title || !newEvent.startDate || !newEvent.endDate || !newEvent.time || !newEvent.location) {
       alert('Please fill in all required fields');
       return;
     }
+    if (newEvent.endDate < newEvent.startDate) {
+      alert('End date must be the same as or after the start date');
+      return;
+    }
+
     const eventToAdd = {
       ...newEvent,
-      id: Math.max(...events.map(e => e.id), 0) + 1
+      id: Math.max(...events.map(ev => ev.id), 0) + 1
     };
     setEvents([...events, eventToAdd]);
     setNewEvent({
       title: '',
-      date: '',
+      startDate: '',
+      endDate: '',
       time: '',
       location: '',
       category: 'worship',
@@ -203,6 +221,15 @@ const Events = () => {
     ? events 
     : events.filter(event => event.category === activeFilter);
 
+  // Admin date-range filtered list (inclusive) — events that intersect the selected range
+  const filteredEventsForAdmin = events.filter(event => {
+    const evStart = event.startDate || event.date || '';
+    const evEnd = event.endDate || event.date || evStart;
+    if (dateRange.startDate && evEnd < dateRange.startDate) return false; // ends before filter range
+    if (dateRange.endDate && evStart > dateRange.endDate) return false; // starts after filter range
+    return true;
+  });
+
   const formatDate = (dateString) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', { 
@@ -211,6 +238,14 @@ const Events = () => {
       month: 'long', 
       day: 'numeric' 
     });
+  };
+
+  const formatDateRange = (event) => {
+    const s = event.startDate || event.date || '';
+    const e = event.endDate || event.date || s;
+    if (!s) return '';
+    if (s === e) return formatDate(s);
+    return `${formatDate(s)} - ${formatDate(e)}`;
   };
 
   const getMinDate = () => {
@@ -293,7 +328,7 @@ const Events = () => {
                   <div className='space-y-3'>
                     <div className='flex items-start gap-3 text-gray-700 dark:text-gray-300'>
                       <Calendar className='shrink-0 mt-1 text-blue-600 dark:text-blue-400' size={18} />
-                      <span className='text-sm'>{formatDate(event.date)}</span>
+                      <span className='text-sm'>{formatDateRange(event)}</span>
                     </div>
                     
                     <div className='flex items-start gap-3 text-gray-700 dark:text-gray-300'>
@@ -348,7 +383,7 @@ const Events = () => {
             <Plus size={20} />
             Add New Event
           </button>
-        </div>
+        </div> 
 
         {/* New Event Form */}
         {showNewEventForm && (
@@ -364,16 +399,32 @@ const Events = () => {
                   className='px-4 py-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-primary'
                   required
                 />
-                <div>
-                  <input
-                    type='date'
-                    value={newEvent.date}
-                    onChange={(e) => setNewEvent({...newEvent, date: e.target.value})}
-                    min={getMinDate()}
-                    className='w-full px-4 py-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-primary'
-                    required
-                  />
-                  <p className='text-xs text-gray-500 dark:text-gray-400 mt-1'>Event dates must be from today onwards</p>
+                <div className='space-y-2'>
+                  <div className='flex gap-3'>
+                    <div className='w-1/2'>
+                      <label className='block text-sm font-medium mb-1'>Start</label>
+                      <input
+                        type='date'
+                        value={newEvent.startDate}
+                        onChange={(e) => setNewEvent({...newEvent, startDate: e.target.value})}
+                        min={getMinDate()}
+                        className='w-full px-4 py-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-primary'
+                        required
+                      />
+                    </div>
+                    <div className='w-1/2'>
+                      <label className='block text-sm font-medium mb-1'>End</label>
+                      <input
+                        type='date'
+                        value={newEvent.endDate}
+                        onChange={(e) => setNewEvent({...newEvent, endDate: e.target.value})}
+                        min={newEvent.startDate || getMinDate()}
+                        className='w-full px-4 py-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-primary'
+                        required
+                      />
+                    </div>
+                  </div>
+                  <p className='text-xs text-gray-500 dark:text-gray-400 mt-1'>Event dates must be from today onwards (Start to End)</p>
                 </div>
                 <input
                   type='text'
@@ -472,10 +523,10 @@ const Events = () => {
               </tr>
             </thead>
             <tbody className='divide-y divide-gray-200 dark:divide-gray-700'>
-              {events.map(event => (
+              {filteredEventsForAdmin.map(event => (
                 <tr key={event.id} className='hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors'>
                   <td className='px-6 py-4 text-gray-900 dark:text-white font-semibold'>{event.title}</td>
-                  <td className='px-6 py-4 text-gray-700 dark:text-gray-300'>{formatDate(event.date)}</td>
+                  <td className='px-6 py-4 text-gray-700 dark:text-gray-300'>{formatDateRange(event)}</td>
                   <td className='px-6 py-4 text-gray-700 dark:text-gray-300'>{event.time}</td>
                   <td className='px-6 py-4 text-gray-700 dark:text-gray-300'>{event.location}</td>
                   <td className='px-6 py-4'>
@@ -505,6 +556,8 @@ const Events = () => {
             </p>
           </div>
         )}
+
+
       </div>
     </div>
   );

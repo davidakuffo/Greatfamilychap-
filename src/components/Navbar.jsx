@@ -37,6 +37,11 @@ const Navbar = ({theme, setTheme}) => {
       <a onClick={() => handleNavClick('#events')} href={isDonatePage ? '/#events' : '#events'} className='sm:hover:border-b'>Events</a>
       <a onClick={() => handleNavClick('#services')} href={isDonatePage ? '/#services' : '#services'} className='sm:hover:border-b'>Services</a>
       <a onClick={() => handleNavClick('#contact')} href={isDonatePage ? '/#contact' : '#contact'} className='sm:hover:border-b'>Contact Us</a>
+
+      {/* Mobile Donate button inside sidebar */}
+      <a href='/donate' onClick={()=> setSidebarOpen(false)} className='sm:hidden mt-6 w-full flex items-center justify-center gap-2 bg-primary text-white px-6 py-3 rounded-full cursor-pointer hover:scale-103 transition-all'>
+        Donate <img src={assets.arrow_icon} width={14} alt=""/>
+      </a>
     </div>
 
     <div className='flex items-center gap-2 sm:gap-4'>
