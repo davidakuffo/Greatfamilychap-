@@ -15,7 +15,8 @@ const Events = () => {
     title: '',
     startDate: '',
     endDate: '',
-    time: '',
+    startTime: '',
+    endTime: '',
     location: '',
     category: 'worship',
     description: '',
@@ -32,6 +33,8 @@ const Events = () => {
       startDate: '2025-01-05',
       endDate: '2025-01-05',
       time: '9:00 AM & 11:00 AM',
+      startTime: '09:00',
+      endTime: '11:00',
       location: 'Main Sanctuary',
       category: 'worship',
       description: 'Join us for inspiring worship, powerful teaching, and community fellowship.',
@@ -44,6 +47,8 @@ const Events = () => {
       startDate: '2025-01-10',
       endDate: '2025-01-10',
       time: '6:00 PM',
+      startTime: '18:00',
+      endTime: '',
       location: 'Youth Center',
       category: 'youth',
       description: 'An evening of worship, games, and Bible study for ages 13-18.',
@@ -56,6 +61,8 @@ const Events = () => {
       startDate: '2025-01-12',
       endDate: '2025-01-12',
       time: '7:00 PM',
+      startTime: '19:00',
+      endTime: '',
       location: 'Prayer Room',
       category: 'prayer',
       description: 'Come together as we lift our prayers and seek God\'s presence.',
@@ -68,6 +75,8 @@ const Events = () => {
       startDate: '2025-01-15',
       endDate: '2025-01-15',
       time: '10:00 AM',
+      startTime: '10:00',
+      endTime: '',
       location: 'City Center',
       category: 'outreach',
       description: 'Serving our community with love through food distribution and care.',
@@ -80,6 +89,8 @@ const Events = () => {
       startDate: '2025-01-17',
       endDate: '2025-01-17',
       time: '7:30 PM',
+      startTime: '19:30',
+      endTime: '',
       location: 'Fellowship Hall',
       category: 'study',
       description: 'Deep dive into God\'s Word with teaching and group discussion.',
@@ -92,6 +103,8 @@ const Events = () => {
       startDate: '2025-01-20',
       endDate: '2025-01-20',
       time: '9:00 AM',
+      startTime: '09:00',
+      endTime: '',
       location: 'Main Sanctuary',
       category: 'special',
       description: 'A day of empowerment, worship, and sisterhood in Christ.',
@@ -170,7 +183,7 @@ const Events = () => {
 
   const handleAddEvent = (e) => {
     e.preventDefault();
-    if (!newEvent.title || !newEvent.startDate || !newEvent.endDate || !newEvent.time || !newEvent.location) {
+    if (!newEvent.title || !newEvent.startDate || !newEvent.endDate || !newEvent.startTime || !newEvent.location) {
       alert('Please fill in all required fields');
       return;
     }
@@ -188,7 +201,8 @@ const Events = () => {
       title: '',
       startDate: '',
       endDate: '',
-      time: '',
+      startTime: '',
+      endTime: '',
       location: '',
       category: 'worship',
       description: '',
@@ -246,6 +260,29 @@ const Events = () => {
     if (!s) return '';
     if (s === e) return formatDate(s);
     return `${formatDate(s)} - ${formatDate(e)}`;
+  };
+
+  const formatTime = (timeString) => {
+    if (!timeString) return '';
+    if (/^\d{1,2}:\d{2}$/.test(timeString)) {
+      const [hStr, mStr] = timeString.split(':');
+      let h = parseInt(hStr, 10);
+      const m = mStr;
+      const ampm = h >= 12 ? 'PM' : 'AM';
+      if (h === 0) h = 12;
+      if (h > 12) h = h - 12;
+      return `${h}:${m} ${ampm}`;
+    }
+    return timeString;
+  };
+
+  const formatTimeRange = (event) => {
+    const s = event.startTime || '';
+    const e = event.endTime || '';
+    if (s && e) return `${formatTime(s)} - ${formatTime(e)}`;
+    if (s) return formatTime(s);
+    if (event.time) return event.time;
+    return '';
   };
 
   const getMinDate = () => {
@@ -333,7 +370,7 @@ const Events = () => {
                     
                     <div className='flex items-start gap-3 text-gray-700 dark:text-gray-300'>
                       <Clock className='shrink-0 mt-1 text-blue-600 dark:text-blue-400' size={18} />
-                      <span className='text-sm'>{event.time}</span>
+                      <span className='text-sm'>{formatTimeRange(event)}</span>
                     </div>
                     
                     <div className='flex items-start gap-3 text-gray-700 dark:text-gray-300'>
@@ -426,14 +463,27 @@ const Events = () => {
                   </div>
                   <p className='text-xs text-gray-500 dark:text-gray-400 mt-1'>Event dates must be from today onwards (Start to End)</p>
                 </div>
-                <input
-                  type='text'
-                  placeholder='Time (e.g., 9:00 AM) *'
-                  value={newEvent.time}
-                  onChange={(e) => setNewEvent({...newEvent, time: e.target.value})}
-                  className='px-4 py-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-primary'
-                  required
-                />
+                <div className='flex gap-3'>
+                  <div className='w-1/2'>
+                    <label className='block text-sm font-medium mb-1'>Start Time *</label>
+                    <input
+                      type='time'
+                      value={newEvent.startTime}
+                      onChange={(e) => setNewEvent({...newEvent, startTime: e.target.value})}
+                      className='w-full px-4 py-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-primary'
+                      required
+                    />
+                  </div>
+                  <div className='w-1/2'>
+                    <label className='block text-sm font-medium mb-1'>End Time</label>
+                    <input
+                      type='time'
+                      value={newEvent.endTime}
+                      onChange={(e) => setNewEvent({...newEvent, endTime: e.target.value})}
+                      className='w-full px-4 py-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-primary'
+                    />
+                  </div>
+                </div>
                 <input
                   type='text'
                   placeholder='Location *'
@@ -527,7 +577,7 @@ const Events = () => {
                 <tr key={event.id} className='hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors'>
                   <td className='px-6 py-4 text-gray-900 dark:text-white font-semibold'>{event.title}</td>
                   <td className='px-6 py-4 text-gray-700 dark:text-gray-300'>{formatDateRange(event)}</td>
-                  <td className='px-6 py-4 text-gray-700 dark:text-gray-300'>{event.time}</td>
+                  <td className='px-6 py-4 text-gray-700 dark:text-gray-300'>{formatTimeRange(event)}</td>
                   <td className='px-6 py-4 text-gray-700 dark:text-gray-300'>{event.location}</td>
                   <td className='px-6 py-4'>
                     <span className='px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-sm font-medium'>
