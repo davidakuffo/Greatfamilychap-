@@ -22,7 +22,7 @@ const About_Us = () => {
           <div className='order-2 md:order-1'>
             <div className='relative overflow-hidden rounded-lg shadow-xl aspect-4/3'>
               <img 
-                src={assets.Papa}
+                src={assets.img_3I5A9345}
                 alt='Church Community'
                 className='w-full h-full object-cover hover:scale-105 transition-transform duration-500'
               />
