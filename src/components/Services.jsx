@@ -5,38 +5,25 @@ const Services = () => {
     {
       day: 'Tuesday',
       title: 'Commanding The Morning',
-      time: '6:00 AM - 8:00 AM',
+      time: '6:30 AM - 8:30 AM',
       description: 'Join us for an evening of powerful prayer, in-depth Bible study, and spiritual growth. A time to deepen your understanding of God\'s Word.',
-      icon: (
-        <svg className='w-12 h-12' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-          <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253'></path>
-        </svg>
-      ),
+      image: '',
       color: 'blue'
     },
     {
       day: 'Friday',
       title: 'Revival Service',
-      time: '6:00 PM - 8:30 PM',
+      time: '7:30 AM - 11:00 AM',
       description: 'Experience the presence of God in our Friday revival service. Come for worship, testimonies, and powerful ministration that will renew your spirit.',
-      icon: (
-        <svg className='w-12 h-12' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-          <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z'></path>
-          <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='M9.879 16.121A3 3 0 1012.015 11L11 14H9c0 .768.293 1.536.879 2.121z'></path>
-        </svg>
-      ),
+      image: '',
       color: 'orange'
     },
     {
       day: 'Sunday',
       title: 'Destiny Encounter Service',
-      time: '9:00 AM - 12:00 PM',
+      time: '6:30 AM - 10:30 AM',
       description: 'Our main Sunday service featuring vibrant worship, inspiring preaching, and fellowship. Bring the whole family for a powerful time in God\'s presence.',
-      icon: (
-        <svg className='w-12 h-12' fill='none' stroke='currentColor' viewBox='0 0 24 24'>
-          <path strokeLinecap='round' strokeLinejoin='round' strokeWidth='2' d='M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z'></path>
-        </svg>
-      ),
+      image: '',
       color: 'purple'
     }
   ]
@@ -76,10 +63,14 @@ const Services = () => {
                 
                 {/* Card Content */}
                 <div className='p-8'>
-                  {/* Icon */}
-                  <div className={`w-20 h-20 ${colors.bg} rounded-full flex items-center justify-center mb-6 ${colors.icon} group-hover:scale-110 transition-transform duration-300`}>
-                    {service.icon}
-                  </div>
+                  {/* Image (optional) */}
+                  {service.image && (
+                    <img
+                      src={service.image}
+                      alt={service.title}
+                      className='w-full h-40 object-cover rounded-md mb-6'
+                    />
+                  )}
 
                   {/* Day Badge */}
                   <div className='mb-4'>
