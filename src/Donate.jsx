@@ -1,7 +1,7 @@
 import React from 'react'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
-import assets from './assets/assets'
+import Online_platform from './assets/Online_Platform 2.jpeg'
 
 const Donate = ({ theme, setTheme }) => {
   return (
@@ -16,7 +16,7 @@ const Donate = ({ theme, setTheme }) => {
           
           <div className='bg-white dark:bg-gray-800 rounded-2xl shadow-2xl overflow-hidden'>
             <img 
-              src={assets.ONLINE_PLATFORM} 
+              src={On} 
               alt='Online Donation Platform' 
               className='w-full h-auto object-cover'
             />
