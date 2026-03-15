@@ -3,10 +3,10 @@ import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import Online_platform from './assets/Online_Platform 2.jpeg'
 
-const Donate = ({ theme, setTheme }) => {
+const Donate = () => {
   return (
     <div className='min-h-screen flex flex-col bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800'>
-      <Navbar theme={theme} setTheme={setTheme} />
+      <Navbar />
       <main className='grow flex items-center justify-center py-12 px-4'>
         <div className='max-w-5xl w-full'>
           <div className='text-center mb-8'>
