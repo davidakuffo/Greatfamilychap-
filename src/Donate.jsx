@@ -5,7 +5,7 @@ import Online_platform from './assets/Online_Platform 2.jpeg'
 
 const Donate = ({ theme, setTheme }) => {
   return (
-    <div className='min-h-screen flex flex-col bg-linear-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800'>
+    <div className='min-h-screen flex flex-col bg-gradient-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800'>
       <Navbar theme={theme} setTheme={setTheme} />
       <main className='grow flex items-center justify-center py-12 px-4'>
         <div className='max-w-5xl w-full'>
@@ -16,7 +16,7 @@ const Donate = ({ theme, setTheme }) => {
           
           <div className='bg-white dark:bg-gray-800 rounded-2xl shadow-2xl overflow-hidden'>
             <img 
-              src={On} 
+              src={Online_platform} 
               alt='Online Donation Platform' 
               className='w-full h-auto object-cover'
             />

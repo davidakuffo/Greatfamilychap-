@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import About_Us from './components/About_Us'
@@ -9,7 +9,21 @@ import Events from './components/Events'
 import Donate from './Donate'
 const App = () => {
 
-  const [theme, setTheme] = useState(localStorage.getItem('theme') ? localStorage.getItem('theme') : 'light ')
+  const [theme, setTheme] = useState('light')
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+
+    const storedTheme = localStorage.getItem('theme')
+    if (storedTheme) {
+      setTheme(storedTheme)
+      return
+    }
+
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+    setTheme(prefersDark ? 'dark' : 'light')
+  }, [])
+
   const path = typeof window !== 'undefined' ? window.location.pathname : '/'
 
   if (path === '/donate') {
