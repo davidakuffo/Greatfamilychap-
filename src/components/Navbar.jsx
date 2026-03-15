@@ -4,13 +4,18 @@ import assets from '../assets/assets'
 const Navbar = () => {
 
   const [sidebarOpen, setSidebarOpen] = useState(false)
-  const isDonatePage = typeof window !== 'undefined' && window.location.pathname === '/donate'
+  const isDonatePage =
+    typeof window !== 'undefined' &&
+    window.location.pathname.startsWith('/donate')
 
   const handleNavClick = (anchor) => {
     setSidebarOpen(false)
+
+    // If we're on the donate page, always navigate back to the home page + anchor.
+    // (Donate is a separate view with no section anchors.)
     if (isDonatePage) {
-      // Navigate to home page with anchor
-      window.location.href = `/${anchor}`
+      const normalizedAnchor = anchor.startsWith('#') ? anchor : `#${anchor}`
+      window.location.href = `/${normalizedAnchor}`
     }
   }
 
