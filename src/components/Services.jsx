@@ -15,7 +15,7 @@ const Services = () => {
     },
     {
       day: 'Friday',
-      title: 'Revival Service',
+      title: 'Prophetic Service',
       time: '7:30 AM - 11:00 AM',
       description: 'Experience the presence of God in our Friday revival service. Come for worship, testimonies, and powerful ministration that will renew your spirit.',
       image: prophetic_service,
@@ -53,7 +53,7 @@ const Services = () => {
         </div>
 
         {/* Services Grid */}
-        <div className='grid md:grid-cols-2 lg:grid-cols-3 gap-8'>
+        <div className='grid md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-8'>
           {services.map((service, index) => {
             const colors = getColorClasses(service.color)
             return (
@@ -66,11 +66,11 @@ const Services = () => {
 
                 {/* Image (optional) */}
                 {service.image && (
-                  <div className='w-full h-44 md:h-56 overflow-hidden'>
+                  <div className='w-full h-52 md:h-64 overflow-hidden bg-gray-100 dark:bg-gray-900'>
                     <img
                       src={service.image}
                       alt={service.title}
-                      className='w-full h-full object-cover'
+                      className='w-full h-full object-contain object-top'
                     />
                   </div>
                 )}
