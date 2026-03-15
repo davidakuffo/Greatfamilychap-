@@ -34,6 +34,9 @@ import img_3I5A9345 from "./3I5A9345.jpg";
 import img_8868 from "./IMG_8868.JPG";
 import ONLINE_PLATFORM from "./ONLINE_PLATFORM.jpg";
 import Papa from "./Papa.jpg";
+import commanding_morning from "./commanding_morning.jpeg";
+import prophetic_service from "./prophetic_service.jpeg";
+import destiny_encounter from "./destiny_encounter.jpeg";
 
 export const company_logos = [
   microsoft_logo,
@@ -75,6 +78,9 @@ const assets = {
   img_8868,
   ONLINE_PLATFORM,
   Papa,
+  prophetic_service,
+  commanding_morning,
+  destiny_encounter,
 };
 
 export default assets;

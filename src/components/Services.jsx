@@ -1,4 +1,7 @@
 import React from 'react'
+import prophetic_service from '../assets/prophetic_service.jpeg'
+import commanding_morning from '../assets/commanding_morning.jpeg'
+import destiny_encounter from '../assets/destiny_encounter.jpeg'
 
 const Services = () => {
   const services = [
@@ -7,7 +10,7 @@ const Services = () => {
       title: 'Commanding The Morning',
       time: '6:30 AM - 8:30 AM',
       description: 'Join us for an evening of powerful prayer, in-depth Bible study, and spiritual growth. A time to deepen your understanding of God\'s Word.',
-      image: '',
+      image: commanding_morning,
       color: 'blue'
     },
     {
@@ -15,7 +18,7 @@ const Services = () => {
       title: 'Revival Service',
       time: '7:30 AM - 11:00 AM',
       description: 'Experience the presence of God in our Friday revival service. Come for worship, testimonies, and powerful ministration that will renew your spirit.',
-      image: '',
+      image: prophetic_service,
       color: 'orange'
     },
     {
@@ -23,7 +26,7 @@ const Services = () => {
       title: 'Destiny Encounter Service',
       time: '6:30 AM - 10:30 AM',
       description: 'Our main Sunday service featuring vibrant worship, inspiring preaching, and fellowship. Bring the whole family for a powerful time in God\'s presence.',
-      image: '',
+      image: destiny_encounter,
       color: 'purple'
     }
   ]
@@ -60,17 +63,20 @@ const Services = () => {
               >
                 {/* Color Accent Bar */}
                 <div className={`h-2 ${colors.accent}`}></div>
-                
-                {/* Card Content */}
-                <div className='p-8'>
-                  {/* Image (optional) */}
-                  {service.image && (
+
+                {/* Image (optional) */}
+                {service.image && (
+                  <div className='w-full h-44 md:h-56 overflow-hidden'>
                     <img
                       src={service.image}
                       alt={service.title}
-                      className='w-full h-40 object-cover rounded-md mb-6'
+                      className='w-full h-full object-cover'
                     />
-                  )}
+                  </div>
+                )}
+
+                {/* Card Content */}
+                <div className='p-8'>
 
                   {/* Day Badge */}
                   <div className='mb-4'>
