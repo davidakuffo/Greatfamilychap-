@@ -26,6 +26,12 @@ const Events = () => {
 
   const ADMIN_PASSWORD = 'admin123'; // Change this to your desired admin password
 
+  // Increment this version whenever you change the default events list.
+  // This forces clients that already have `gfc_events` in localStorage to refresh.
+  const EVENTS_STORAGE_KEY = 'gfc_events'
+  const EVENTS_VERSION_KEY = 'gfc_events_version'
+  const EVENTS_VERSION = 1
+
   const defaultEvents = [
     {
       id: 1,
@@ -123,26 +129,36 @@ const Events = () => {
     { id: 'special', label: 'Special Events' }
   ];
 
-  // Load events from localStorage on mount (with safe parsing)
+  // Load events from localStorage on mount (with safe parsing).
+  // If the stored version doesn’t match, we clear the cache so updates show immediately.
   useEffect(() => {
-    const savedEvents = localStorage.getItem('gfc_events');
-    if (savedEvents) {
-      try {
-        const parsed = JSON.parse(savedEvents);
-        const normalized = Array.isArray(parsed) ? parsed.map(ev => ({
-          ...ev,
-          startDate: ev.startDate || ev.date || '',
-          endDate: ev.endDate || ev.date || ev.startDate || ''
-        })) : defaultEvents;
-        setEvents(normalized);
-      } catch (err) {
-        // Malformed data — reset to defaults
-        setEvents(defaultEvents);
-        localStorage.setItem('gfc_events', JSON.stringify(defaultEvents));
-      }
-    } else {
+    const storedVersion = localStorage.getItem(EVENTS_VERSION_KEY);
+    const shouldReset = storedVersion !== String(EVENTS_VERSION);
+    const savedEvents = localStorage.getItem(EVENTS_STORAGE_KEY);
+
+    if (shouldReset || !savedEvents) {
+      localStorage.setItem(EVENTS_STORAGE_KEY, JSON.stringify(defaultEvents));
+      localStorage.setItem(EVENTS_VERSION_KEY, String(EVENTS_VERSION));
       setEvents(defaultEvents);
-      localStorage.setItem('gfc_events', JSON.stringify(defaultEvents));
+      return;
+    }
+
+    try {
+      const parsed = JSON.parse(savedEvents);
+      const normalized = Array.isArray(parsed)
+        ? parsed.map(ev => ({
+            ...ev,
+            startDate: ev.startDate || ev.date || '',
+            endDate: ev.endDate || ev.date || ev.startDate || ''
+          }))
+        : defaultEvents;
+
+      setEvents(normalized);
+    } catch (err) {
+      // Malformed data — reset to defaults
+      setEvents(defaultEvents);
+      localStorage.setItem(EVENTS_STORAGE_KEY, JSON.stringify(defaultEvents));
+      localStorage.setItem(EVENTS_VERSION_KEY, String(EVENTS_VERSION));
     }
   }, []);
 
@@ -165,9 +181,10 @@ const Events = () => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
-  // Save events to localStorage whenever they change (including when the list becomes empty)
+  // Save events to localStorage whenever they change (including when the list becomes empty).
   useEffect(() => {
-    localStorage.setItem('gfc_events', JSON.stringify(events));
+    localStorage.setItem(EVENTS_STORAGE_KEY, JSON.stringify(events));
+    localStorage.setItem(EVENTS_VERSION_KEY, String(EVENTS_VERSION));
   }, [events]);
 
   const handleAdminLogin = (e) => {
