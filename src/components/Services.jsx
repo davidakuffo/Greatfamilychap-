@@ -66,11 +66,11 @@ const Services = () => {
 
                 {/* Image (optional) */}
                 {service.image && (
-                  <div className='w-full h-52 md:h-64 overflow-hidden bg-gray-100 dark:bg-gray-900'>
+                  <div className='w-full aspect-[4/3] overflow-hidden bg-gray-100 dark:bg-gray-900'>
                     <img
                       src={service.image}
                       alt={service.title}
-                      className='w-full h-full object-contain object-top'
+                      className='w-full h-full object-cover object-center transition-transform duration-500 group-hover:scale-105'
                     />
                   </div>
                 )}
