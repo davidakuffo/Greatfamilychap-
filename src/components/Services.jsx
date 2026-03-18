@@ -1,9 +1,36 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import prophetic_service from '../assets/prophetic_service.jpeg'
 import commanding_morning from '../assets/commanding_morning.jpeg'
 import destiny_encounter from '../assets/destiny_encounter.jpeg'
 
 const Services = () => {
+  const [previewSrc, setPreviewSrc] = useState(null)
+  const [previewAlt, setPreviewAlt] = useState('')
+
+  const openPreview = (src, alt) => {
+    setPreviewSrc(src)
+    setPreviewAlt(alt)
+  }
+
+  const closePreview = () => {
+    setPreviewSrc(null)
+    setPreviewAlt('')
+  }
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (event.key === 'Escape') closePreview()
+    }
+
+    if (previewSrc) {
+      window.addEventListener('keydown', handleKeyDown)
+    }
+
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [previewSrc])
+
   const services = [
     {
       day: 'Tuesday',
@@ -66,7 +93,12 @@ const Services = () => {
 
                 {/* Image (optional) */}
                 {service.image && (
-                  <div className='w-full aspect-[4/3] overflow-hidden bg-gray-100 dark:bg-gray-900'>
+                  <div
+                    onClick={() => openPreview(service.image, service.title)}
+                    role='button'
+                    aria-label={`Preview ${service.title}`}
+                    className='w-full aspect-[4/3] overflow-hidden bg-gray-100 dark:bg-gray-900 cursor-pointer'
+                  >
                     <img
                       src={service.image}
                       alt={service.title}
@@ -107,6 +139,38 @@ const Services = () => {
             )
           })}
         </div>
+
+        {previewSrc && (
+          <div
+            className='fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4'
+            onClick={closePreview}
+            role='dialog'
+            aria-modal='true'
+            aria-label='Image preview'
+          >
+            <div
+              className='relative w-full max-w-3xl overflow-hidden rounded-2xl bg-white dark:bg-gray-900 shadow-xl'
+              onClick={(event) => event.stopPropagation()}
+            >
+              <button
+                type='button'
+                onClick={closePreview}
+                className='absolute right-3 top-3 rounded-full bg-black/30 p-2 text-white hover:bg-black/50 focus:outline-none focus:ring-2 focus:ring-primary'
+                aria-label='Close preview'
+              >
+                <span aria-hidden='true' className='text-xl font-semibold'>✕</span>
+              </button>
+              <img
+                src={previewSrc}
+                alt={previewAlt}
+                className='h-[75vh] w-full object-contain bg-black'
+              />
+              <div className='p-4 text-center text-sm text-gray-700 dark:text-gray-200'>
+                {previewAlt}
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Call to Action */}
         <div className='mt-16 text-center bg-white dark:bg-gray-800 rounded-xl p-8 shadow-lg'>
