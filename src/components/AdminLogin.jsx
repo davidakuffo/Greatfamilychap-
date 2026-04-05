@@ -13,7 +13,7 @@ const AdminLogin = ({ onLogin, onCancel }) => {
     setError('');
 
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
+      const { error } = await supabase.auth.signInWithPassword({
         email: email,
         password: password
       });

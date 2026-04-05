@@ -59,11 +59,16 @@ const Services = () => {
   ]
 
   // Use brand colors: primary for icons/buttons, secondary for small accents
-  const getColorClasses = (color) => ({
-    bg: 'bg-primary text-accent',
-    icon: 'text-accent',
-    accent: 'bg-secondary'
-  })
+  const getColorClasses = (color) => {
+    switch (color) {
+      case 'orange':
+        return { bg: 'bg-amber-500 text-accent', icon: 'text-amber-500', accent: 'bg-secondary' }
+      case 'purple':
+        return { bg: 'bg-violet-500 text-accent', icon: 'text-violet-500', accent: 'bg-secondary' }
+      default:
+        return { bg: 'bg-primary text-accent', icon: 'text-accent', accent: 'bg-secondary' }
+    }
+  }
 
   return (
     <div id='services' className='bg-gray-50 dark:bg-gray-900 py-20 px-4 sm:px-12 lg:px-24 xl:px-40 transition-colors duration-300'>
@@ -93,7 +98,10 @@ const Services = () => {
 
                 {/* Image (optional) */}
                 {service.image && (
-                  <div className='w-full aspect-[4/3] overflow-hidden bg-gray-100 dark:bg-gray-900'>
+                  <div
+                    className='w-full aspect-[4/3] overflow-hidden bg-gray-100 dark:bg-gray-900 cursor-pointer'
+                    onClick={() => openPreview(service.image, service.title)}
+                  >
                     <img
                       src={service.image}
                       alt={service.title}
@@ -107,7 +115,7 @@ const Services = () => {
 
                   {/* Day Badge */}
                   <div className='mb-4'>
-                    <span className={`inline-block px-4 py-1 ${colors.accent} text-detail text-sm font-semibold rounded-full`}>
+                    <span className={`inline-block px-4 py-1 ${colors.bg} text-detail text-sm font-semibold rounded-full`}>
                       {service.day}
                     </span>
                   </div>
@@ -176,6 +184,28 @@ const Services = () => {
           </div>
         </div>
       </div>
+      {previewSrc && (
+        <div className='fixed inset-0 z-50 flex items-center justify-center bg-black/70 p-4'>
+          <div className='relative w-full max-w-4xl rounded-3xl overflow-hidden bg-white dark:bg-gray-900 shadow-2xl'>
+            <button
+              onClick={closePreview}
+              className='absolute top-4 right-4 z-10 rounded-full bg-white/90 px-3 py-2 text-sm font-semibold text-gray-900 transition hover:bg-white dark:bg-gray-950 dark:text-white'
+            >
+              ×
+            </button>
+            <img
+              src={previewSrc}
+              alt={previewAlt}
+              className='w-full max-h-[80vh] object-contain bg-black'
+            />
+            <div className='p-6 text-center bg-gray-50 dark:bg-gray-950'>
+              <p className='text-lg font-semibold text-gray-900 dark:text-white'>
+                {previewAlt}
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

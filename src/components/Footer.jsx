@@ -108,7 +108,17 @@ const Footer = () => {
             </ul>
           </div>
 
-
+          {/* Ministries */}
+          <div>
+            <h3 className='text-white text-xl font-bold mb-4'>Ministries</h3>
+            <ul className='space-y-2'>
+              {ministries.map((ministry, index) => (
+                <li key={index} className='text-gray-400'>
+                  {ministry.name}
+                </li>
+              ))}
+            </ul>
+          </div>
 
           {/* Contact Info */}
           <div>

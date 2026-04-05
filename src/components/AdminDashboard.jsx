@@ -174,7 +174,7 @@ const AdminDashboard = ({ onLogout }) => {
       const filePath = `event-images/${fileName}`;
 
       // Upload to Supabase Storage
-      const { data, error } = await supabase.storage
+      const { error } = await supabase.storage
         .from('event-images')
         .upload(filePath, file, {
           cacheControl: '3600',
