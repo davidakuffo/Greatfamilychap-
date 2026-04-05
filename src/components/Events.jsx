@@ -1,123 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Calendar, Clock, MapPin, Users, Trash2, Plus, LogOut } from 'lucide-react';
+import { Calendar, Clock, MapPin, Users } from 'lucide-react';
+import { supabase } from '../../supabaseClient';
+import AdminDashboard from './AdminDashboard';
+import AdminLogin from './AdminLogin';
 
 const Events = () => {
   const [activeFilter, setActiveFilter] = useState('all');
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [adminPassword, setAdminPassword] = useState('');
   const [events, setEvents] = useState([]);
-  const [showNewEventForm, setShowNewEventForm] = useState(false);
-  const [dateRange, setDateRange] = useState ({
-    startDate: '',
-    endDate: ''
-  });
-  const [newEvent, setNewEvent] = useState({
-    title: '',
-    startDate: '',
-    endDate: '',
-    startTime: '',
-    endTime: '',
-    location: '',
-    category: 'worship',
-    description: '',
-    attendees: '',
-    image: null
-  });
-
-  const ADMIN_PASSWORD = 'admin123'; // Change this to your desired admin password
-
-  // Increment this version whenever you change the default events list.
-  // This forces clients that already have `gfc_events` in localStorage to refresh.
-  const EVENTS_STORAGE_KEY = 'gfc_events'
-  const EVENTS_VERSION_KEY = 'gfc_events_version'
-  const EVENTS_VERSION = 1
-
-  const defaultEvents = [
-    {
-      id: 1,
-      title: 'Sunday Worship Service',
-      startDate: '2025-01-05',
-      endDate: '2025-01-05',
-      time: '9:00 AM & 11:00 AM',
-      startTime: '09:00',
-      endTime: '11:00',
-      location: 'Main Sanctuary',
-      category: 'worship',
-      description: 'Join us for inspiring worship, powerful teaching, and community fellowship.',
-      attendees: '200+',
-      image: null
-    },
-    {
-      id: 2,
-      title: 'Youth Night',
-      startDate: '2025-01-10',
-      endDate: '2025-01-10',
-      time: '6:00 PM',
-      startTime: '18:00',
-      endTime: '',
-      location: 'Youth Center',
-      category: 'youth',
-      description: 'An evening of worship, games, and Bible study for ages 13-18.',
-      attendees: '50+',
-      image: null
-    },
-    {
-      id: 3,
-      title: 'Prayer Meeting',
-      startDate: '2025-01-12',
-      endDate: '2025-01-12',
-      time: '7:00 PM',
-      startTime: '19:00',
-      endTime: '',
-      location: 'Prayer Room',
-      category: 'prayer',
-      description: 'Come together as we lift our prayers and seek God\'s presence.',
-      attendees: '30+',
-      image: null
-    },
-    {
-      id: 4,
-      title: 'Community Outreach',
-      startDate: '2025-01-15',
-      endDate: '2025-01-15',
-      time: '10:00 AM',
-      startTime: '10:00',
-      endTime: '',
-      location: 'City Center',
-      category: 'outreach',
-      description: 'Serving our community with love through food distribution and care.',
-      attendees: '40+',
-      image: null
-    },
-    {
-      id: 5,
-      title: 'Bible Study',
-      startDate: '2025-01-17',
-      endDate: '2025-01-17',
-      time: '7:30 PM',
-      startTime: '19:30',
-      endTime: '',
-      location: 'Fellowship Hall',
-      category: 'study',
-      description: 'Deep dive into God\'s Word with teaching and group discussion.',
-      attendees: '35+',
-      image: null
-    },
-    {
-      id: 6,
-      title: 'Women\'s Conference',
-      startDate: '2025-01-20',
-      endDate: '2025-01-20',
-      time: '9:00 AM',
-      startTime: '09:00',
-      endTime: '',
-      location: 'Main Sanctuary',
-      category: 'special',
-      description: 'A day of empowerment, worship, and sisterhood in Christ.',
-      attendees: '100+',
-      image: null
-    }
-  ];
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [showLogin, setShowLogin] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const categories = [
     { id: 'all', label: 'All Events' },
@@ -129,211 +21,163 @@ const Events = () => {
     { id: 'special', label: 'Special Events' }
   ];
 
-  // Load events from localStorage on mount (with safe parsing).
-  // If the stored version doesn’t match, we clear the cache so updates show immediately.
+  // Fetch events from Supabase
   useEffect(() => {
-    const storedVersion = localStorage.getItem(EVENTS_VERSION_KEY);
-    const shouldReset = storedVersion !== String(EVENTS_VERSION);
-    const savedEvents = localStorage.getItem(EVENTS_STORAGE_KEY);
+    fetchEvents();
+    checkAuthStatus();
 
-    if (shouldReset || !savedEvents) {
-      localStorage.setItem(EVENTS_STORAGE_KEY, JSON.stringify(defaultEvents));
-      localStorage.setItem(EVENTS_VERSION_KEY, String(EVENTS_VERSION));
-      setEvents(defaultEvents);
-      return;
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('admin') === 'true' || window.location.hash === '#admin') {
+      setShowLogin(true);
     }
+  }, []);
 
+  const fetchEvents = async () => {
     try {
-      const parsed = JSON.parse(savedEvents);
-      const normalized = Array.isArray(parsed)
-        ? parsed.map(ev => ({
-            ...ev,
-            startDate: ev.startDate || ev.date || '',
-            endDate: ev.endDate || ev.date || ev.startDate || ''
-          }))
-        : defaultEvents;
+      setLoading(true);
+      const { data, error } = await supabase
+        .from('events')
+        .select('*')
+        .order('start_date', { ascending: true });
 
-      setEvents(normalized);
-    } catch (err) {
-      // Malformed data — reset to defaults
-      setEvents(defaultEvents);
-      localStorage.setItem(EVENTS_STORAGE_KEY, JSON.stringify(defaultEvents));
-      localStorage.setItem(EVENTS_VERSION_KEY, String(EVENTS_VERSION));
-    }
-  }, []);
-
-  // Hidden keyboard shortcut for admin login (Ctrl+Shift+A)
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.ctrlKey && e.shiftKey && e.key === 'A') {
-        e.preventDefault();
-        const pwd = prompt('Enter admin password:');
-        if (pwd) {
-          if (pwd === ADMIN_PASSWORD) {
-            setIsAdmin(true);
-          } else {
-            alert('Incorrect password');
-          }
+      if (error) throw error;
+      setEvents(data || []);
+    } catch (error) {
+      console.error('Error fetching events:', error);
+      // Fallback to default events if Supabase fails
+      setEvents([
+        {
+          id: 1,
+          title: 'Sunday Worship Service',
+          start_date: '2025-01-05',
+          end_date: '2025-01-05',
+          start_time: '09:00',
+          end_time: '11:00',
+          location: 'Main Sanctuary',
+          category: 'worship',
+          description: 'Join us for inspiring worship, powerful teaching, and community fellowship.',
+          attendees: '200+',
+          image_url: null
+        },
+        {
+          id: 2,
+          title: 'Youth Night',
+          start_date: '2025-01-10',
+          end_date: '2025-01-10',
+          start_time: '18:00',
+          end_time: '',
+          location: 'Youth Center',
+          category: 'youth',
+          description: 'An evening of worship, games, and Bible study for ages 13-18.',
+          attendees: '50+',
+          image_url: null
+        },
+        {
+          id: 3,
+          title: 'Prayer Meeting',
+          start_date: '2025-01-12',
+          end_date: '2025-01-12',
+          start_time: '19:00',
+          end_time: '',
+          location: 'Prayer Room',
+          category: 'prayer',
+          description: 'Come together as we lift our prayers and seek God\'s presence.',
+          attendees: '30+',
+          image_url: null
         }
-      }
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, []);
-
-  // Save events to localStorage whenever they change (including when the list becomes empty).
-  useEffect(() => {
-    localStorage.setItem(EVENTS_STORAGE_KEY, JSON.stringify(events));
-    localStorage.setItem(EVENTS_VERSION_KEY, String(EVENTS_VERSION));
-  }, [events]);
-
-  const handleAdminLogin = (e) => {
-    e.preventDefault();
-    if (adminPassword === ADMIN_PASSWORD) {
-      setIsAdmin(true);
-      setAdminPassword('');
-    } else {
-      alert('Incorrect password');
-      setAdminPassword('');
+      ]);
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleAddEvent = (e) => {
-    e.preventDefault();
-    if (!newEvent.title || !newEvent.startDate || !newEvent.endDate || !newEvent.startTime || !newEvent.location) {
-      alert('Please fill in all required fields');
-      return;
-    }
-    if (newEvent.endDate < newEvent.startDate) {
-      alert('End date must be the same as or after the start date');
-      return;
-    }
-
-    const eventToAdd = {
-      ...newEvent,
-      id: Math.max(...events.map(ev => ev.id), 0) + 1
-    };
-    setEvents([...events, eventToAdd]);
-    setNewEvent({
-      title: '',
-      startDate: '',
-      endDate: '',
-      startTime: '',
-      endTime: '',
-      location: '',
-      category: 'worship',
-      description: '',
-      attendees: '',
-      image: null
-    });
-    setShowNewEventForm(false);
-    alert('Event added successfully!');
-  };
-
-  const handleImageUpload = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setNewEvent({...newEvent, image: reader.result});
-      };
-      reader.readAsDataURL(file);
+  const checkAuthStatus = async () => {
+    try {
+      const { data: { session } } = await supabase.auth.getSession();
+      setIsAdmin(!!session);
+    } catch (error) {
+      console.error('Error checking auth status:', error);
+      setIsAdmin(false);
     }
   };
 
-  const handleDeleteEvent = (id) => {
-    if (window.confirm('Are you sure you want to delete this event?')) {
-      setEvents(events.filter(event => event.id !== id));
-      alert('Event deleted successfully!');
+  const handleAdminLogin = () => {
+    setIsAdmin(true);
+    setShowLogin(false);
+  };
+
+  const handleAdminLogout = async () => {
+    try {
+      await supabase.auth.signOut();
+      setIsAdmin(false);
+      fetchEvents(); // Refresh events after logout
+    } catch (error) {
+      console.error('Error logging out:', error);
     }
   };
 
-  const filteredEvents = activeFilter === 'all' 
-    ? events 
+  const filteredEvents = activeFilter === 'all'
+    ? events
     : events.filter(event => event.category === activeFilter);
 
-  // Admin date-range filtered list (inclusive) — events that intersect the selected range
-  const filteredEventsForAdmin = events.filter(event => {
-    const evStart = event.startDate || event.date || '';
-    const evEnd = event.endDate || event.date || evStart;
-    if (dateRange.startDate && evEnd < dateRange.startDate) return false; // ends before filter range
-    if (dateRange.endDate && evStart > dateRange.endDate) return false; // starts after filter range
-    return true;
-  });
-
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', { 
-      weekday: 'long', 
-      year: 'numeric', 
-      month: 'long', 
-      day: 'numeric' 
-    });
-  };
-
   const formatDateRange = (event) => {
-    const s = event.startDate || event.date || '';
-    const e = event.endDate || event.date || s;
-    if (!s) return '';
-    if (s === e) return formatDate(s);
-    return `${formatDate(s)} - ${formatDate(e)}`;
-  };
+    const start = new Date(event.start_date);
+    const end = new Date(event.end_date);
 
-  const formatTime = (timeString) => {
-    if (!timeString) return '';
-    if (/^\d{1,2}:\d{2}$/.test(timeString)) {
-      const [hStr, mStr] = timeString.split(':');
-      let h = parseInt(hStr, 10);
-      const m = mStr;
-      const ampm = h >= 12 ? 'PM' : 'AM';
-      if (h === 0) h = 12;
-      if (h > 12) h = h - 12;
-      return `${h}:${m} ${ampm}`;
+    if (start.toDateString() === end.toDateString()) {
+      return start.toLocaleDateString('en-US', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      });
     }
-    return timeString;
+
+    return `${start.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} - ${end.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}`;
   };
 
   const formatTimeRange = (event) => {
-    const s = event.startTime || '';
-    const e = event.endTime || '';
-    if (s && e) return `${formatTime(s)} - ${formatTime(e)}`;
-    if (s) return formatTime(s);
-    if (event.time) return event.time;
-    return '';
+    if (!event.start_time) return '';
+    if (!event.end_time) return event.start_time;
+
+    const formatTime = (timeString) => {
+      const [hours, minutes] = timeString.split(':');
+      const hour = parseInt(hours);
+      const ampm = hour >= 12 ? 'PM' : 'AM';
+      const displayHour = hour % 12 || 12;
+      return `${displayHour}:${minutes} ${ampm}`;
+    };
+
+    return `${formatTime(event.start_time)} - ${formatTime(event.end_time)}`;
   };
 
-  const getMinDate = () => {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    return today.toISOString().split('T')[0];
-  };
+  // Show admin dashboard if authenticated
+  if (isAdmin) {
+    return <AdminDashboard onLogout={handleAdminLogout} />;
+  }
 
-  const getMaxDate = () => {
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    tomorrow.setHours(0, 0, 0, 0);
-    return tomorrow.toISOString().split('T')[0];
-  };
-
-  const getDateRangeDisplay = () => {
-    const min = new Date(getMinDate());
-    const max = new Date(getMaxDate());
-    return `${min.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })} - ${max.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`;
-  };
-
-  // Admin Login UI
-  if (!isAdmin) {
+  // Show loading state
+  if (loading) {
     return (
-      <div id='events' className='py-20 px-4 sm:px-12 lg:px-24 xl:px-40 bg-linear-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800 min-h-screen'>
-        <div className='max-w-7xl mx-auto'>
-          <div className='text-center mb-12'>
-            <h2 className='text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white mb-4'>
-              Upcoming Events
-            </h2>
-            <p className='text-gray-600 dark:text-gray-300 max-w-3xl mx-auto text-lg'>
-              Join us for worship, fellowship, and community. Everyone is welcome!
-            </p>
-          </div>
+      <div className='py-20 px-4 sm:px-12 lg:px-24 xl:px-40 bg-linear-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800 min-h-screen'>
+        <div className='max-w-7xl mx-auto text-center'>
+          <p className='text-lg'>Loading events...</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div id='events' className='py-20 px-4 sm:px-12 lg:px-24 xl:px-40 bg-linear-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800 min-h-screen'>
+      <div className='max-w-7xl mx-auto'>
+        <div className='text-center mb-12'>
+          <h2 className='text-4xl font-bold text-primary mb-4'>
+            Upcoming Events
+          </h2>
+          <p className='text-lg text-gray-600 dark:text-gray-300 max-w-2xl mx-auto'>
+            Join us for worship services, community events, and special gatherings that bring our church family together.
+          </p>
+        </div>
 
           {/* Filter Buttons */}
           <div className='flex flex-wrap justify-center gap-3 mb-12'>
@@ -360,13 +204,13 @@ const Events = () => {
                 className='bg-white dark:bg-gray-800 rounded-2xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden group hover:-translate-y-2'
               >
                 {/* Event Image */}
-                {event.image && (
+                {event.image_url && (
                   <div className='relative w-full h-48 overflow-hidden bg-gray-200 dark:bg-gray-700'>
-                    <img src={event.image} alt={event.title} className='w-full h-full object-cover group-hover:scale-110 transition-transform duration-300' />
+                    <img src={event.image_url} alt={event.title} className='w-full h-full object-cover group-hover:scale-110 transition-transform duration-300' />
                   </div>
                 )}
                 
-                <div className={`${event.image ? 'bg-linear-to-r from-blue-500 to-purple-600 p-6' : 'bg-linear-to-r from-blue-500 to-purple-600 p-6'} text-white`}>
+                <div className={`${event.image_url ? 'bg-linear-to-r from-blue-500 to-purple-600 p-6' : 'bg-linear-to-r from-blue-500 to-purple-600 p-6'} text-white`}>
                   <h3 className='text-2xl font-bold mb-2'>{event.title}</h3>
                   <div className='flex items-center gap-2 text-blue-50'>
                     <Users size={16} />
@@ -407,224 +251,14 @@ const Events = () => {
               </p>
             </div>
           )}
-        </div>
-      </div>
-    );
-  }
 
-  // Admin Dashboard
-  return (
-    <div id='events' className='py-20 px-4 sm:px-12 lg:px-24 xl:px-40 bg-linear-to-b from-white to-gray-50 dark:from-gray-900 dark:to-gray-800 min-h-screen'>
-      <div className='max-w-7xl mx-auto'>
-        {/* Admin Header */}
-        <div className='flex justify-between items-center mb-12'>
-          <h2 className='text-4xl font-bold text-primary'>Event Management Dashboard</h2>
-          <button
-            onClick={() => setIsAdmin(false)}
-            className='flex items-center gap-2 px-6 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-all'
-          >
-            <LogOut size={20} />
-            Logout
-          </button>
-        </div>
-
-        {/* Add Event Button */}
-        <div className='mb-8'>
-          <button
-            onClick={() => setShowNewEventForm(!showNewEventForm)}
-            className='flex items-center gap-2 px-6 py-3 bg-primary text-accent rounded-lg hover:opacity-95 transition-all font-semibold'
-          >
-            <Plus size={20} />
-            Add New Event
-          </button>
-        </div> 
-
-        {/* New Event Form */}
-        {showNewEventForm && (
-          <div className='bg-white dark:bg-gray-800 rounded-xl p-8 shadow-lg mb-12'>
-            <h3 className='text-2xl font-bold text-gray-900 dark:text-white mb-6'>Create New Event</h3>
-            <form onSubmit={handleAddEvent} className='space-y-4'>
-              <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
-                <input
-                  type='text'
-                  placeholder='Event Title *'
-                  value={newEvent.title}
-                  onChange={(e) => setNewEvent({...newEvent, title: e.target.value})}
-                  className='px-4 py-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-primary'
-                  required
-                />
-                <div className='space-y-2'>
-                  <div className='flex gap-3'>
-                    <div className='w-1/2'>
-                      <label className='block text-sm font-medium mb-1'>Start</label>
-                      <input
-                        type='date'
-                        value={newEvent.startDate}
-                        onChange={(e) => setNewEvent({...newEvent, startDate: e.target.value})}
-                        min={getMinDate()}
-                        className='w-full px-4 py-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-primary'
-                        required
-                      />
-                    </div>
-                    <div className='w-1/2'>
-                      <label className='block text-sm font-medium mb-1'>End</label>
-                      <input
-                        type='date'
-                        value={newEvent.endDate}
-                        onChange={(e) => setNewEvent({...newEvent, endDate: e.target.value})}
-                        min={newEvent.startDate || getMinDate()}
-                        className='w-full px-4 py-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-primary'
-                        required
-                      />
-                    </div>
-                  </div>
-                  <p className='text-xs text-gray-500 dark:text-gray-400 mt-1'>Event dates must be from today onwards (Start to End)</p>
-                </div>
-                <div className='flex gap-3'>
-                  <div className='w-1/2'>
-                    <label className='block text-sm font-medium mb-1'>Start Time *</label>
-                    <input
-                      type='time'
-                      value={newEvent.startTime}
-                      onChange={(e) => setNewEvent({...newEvent, startTime: e.target.value})}
-                      className='w-full px-4 py-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-primary'
-                      required
-                    />
-                  </div>
-                  <div className='w-1/2'>
-                    <label className='block text-sm font-medium mb-1'>End Time</label>
-                    <input
-                      type='time'
-                      value={newEvent.endTime}
-                      onChange={(e) => setNewEvent({...newEvent, endTime: e.target.value})}
-                      className='w-full px-4 py-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-primary'
-                    />
-                  </div>
-                </div>
-                <input
-                  type='text'
-                  placeholder='Location *'
-                  value={newEvent.location}
-                  onChange={(e) => setNewEvent({...newEvent, location: e.target.value})}
-                  className='px-4 py-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-primary'
-                  required
-                />
-                <select
-                  value={newEvent.category}
-                  onChange={(e) => setNewEvent({...newEvent, category: e.target.value})}
-                  className='px-4 py-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-primary'
-                >
-                  {categories.filter(c => c.id !== 'all').map(cat => (
-                    <option key={cat.id} value={cat.id}>{cat.label}</option>
-                  ))}
-                </select>
-                <input
-                  type='text'
-                  placeholder='Expected Attendees (e.g., 50+)'
-                  value={newEvent.attendees}
-                  onChange={(e) => setNewEvent({...newEvent, attendees: e.target.value})}
-                  className='px-4 py-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-primary'
-                />
-              </div>
-              <textarea
-                placeholder='Event Description'
-                value={newEvent.description}
-                onChange={(e) => setNewEvent({...newEvent, description: e.target.value})}
-                rows='4'
-                className='w-full px-4 py-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-primary resize-none'
-              />
-              
-              {/* Image Upload */}
-              <div>
-                <label className='block text-gray-700 dark:text-gray-300 font-semibold mb-2'>Event Image</label>
-                <input
-                  type='file'
-                  accept='image/*'
-                  onChange={handleImageUpload}
-                  className='w-full px-4 py-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-primary'
-                />
-                {newEvent.image && (
-                  <div className='mt-4 relative'>
-                    <img src={newEvent.image} alt='Preview' className='w-full h-48 object-cover rounded-lg' />
-                    <button
-                      type='button'
-                      onClick={() => setNewEvent({...newEvent, image: null})}
-                      className='absolute top-2 right-2 bg-red-600 text-white p-2 rounded-full hover:bg-red-700'
-                    >
-                      ✕
-                    </button>
-                  </div>
-                )}
-              </div>
-
-              <div className='flex gap-4'>
-                <button
-                  type='submit'
-                  className='px-6 py-3 bg-primary text-accent font-semibold rounded-lg hover:opacity-95 transition-all'
-                >
-                  Add Event
-                </button>
-                <button
-                  type='button'
-                  onClick={() => setShowNewEventForm(false)}
-                  className='px-6 py-3 bg-gray-500 text-white font-semibold rounded-lg hover:bg-gray-600 transition-all'
-                >
-                  Cancel
-                </button>
-              </div>
-            </form>
-          </div>
+        {/* Admin Login Modal */}
+        {showLogin && (
+          <AdminLogin
+            onLogin={handleAdminLogin}
+            onCancel={() => setShowLogin(false)}
+          />
         )}
-
-        {/* Events Management Table */}
-        <div className='bg-white dark:bg-gray-800 rounded-xl shadow-lg overflow-x-auto'>
-          <table className='w-full'>
-            <thead className='bg-primary text-accent'>
-              <tr>
-                <th className='px-6 py-4 text-left'>Title</th>
-                <th className='px-6 py-4 text-left'>Date</th>
-                <th className='px-6 py-4 text-left'>Time</th>
-                <th className='px-6 py-4 text-left'>Location</th>
-                <th className='px-6 py-4 text-left'>Category</th>
-                <th className='px-6 py-4 text-center'>Action</th>
-              </tr>
-            </thead>
-            <tbody className='divide-y divide-gray-200 dark:divide-gray-700'>
-              {filteredEventsForAdmin.map(event => (
-                <tr key={event.id} className='hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors'>
-                  <td className='px-6 py-4 text-gray-900 dark:text-white font-semibold'>{event.title}</td>
-                  <td className='px-6 py-4 text-gray-700 dark:text-gray-300'>{formatDateRange(event)}</td>
-                  <td className='px-6 py-4 text-gray-700 dark:text-gray-300'>{formatTimeRange(event)}</td>
-                  <td className='px-6 py-4 text-gray-700 dark:text-gray-300'>{event.location}</td>
-                  <td className='px-6 py-4'>
-                    <span className='px-3 py-1 bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 rounded-full text-sm font-medium'>
-                      {categories.find(c => c.id === event.category)?.label}
-                    </span>
-                  </td>
-                  <td className='px-6 py-4 text-center'>
-                    <button
-                      onClick={() => handleDeleteEvent(event.id)}
-                      className='inline-flex items-center gap-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-all'
-                    >
-                      <Trash2 size={18} />
-                      Delete
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-
-        {events.length === 0 && (
-          <div className='text-center py-12'>
-            <p className='text-gray-500 dark:text-gray-400 text-lg'>
-              No events yet. Create one to get started!
-            </p>
-          </div>
-        )}
-
-
       </div>
     </div>
   );
