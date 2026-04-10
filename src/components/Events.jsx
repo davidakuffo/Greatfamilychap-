@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Calendar, Clock, MapPin, Users } from 'lucide-react';
-import { supabase } from '../../supabaseClient';
+import { supabase } from '../lib/supabase';
 import AdminDashboard from './AdminDashboard';
 import AdminLogin from './AdminLogin';
 
@@ -26,10 +26,19 @@ const Events = () => {
     fetchEvents();
     checkAuthStatus();
 
-    const params = new URLSearchParams(window.location.search);
-    if (params.get('admin') === 'true' || window.location.hash === '#admin') {
-      setShowLogin(true);
-    }
+    const handleHashChange = () => {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('admin') === 'true' || window.location.hash === '#admin') {
+        setShowLogin(true);
+      } else {
+        setShowLogin(false);
+      }
+    };
+
+    handleHashChange();
+    window.addEventListener('hashchange', handleHashChange);
+
+    return () => window.removeEventListener('hashchange', handleHashChange);
   }, []);
 
   const fetchEvents = async () => {
@@ -256,7 +265,10 @@ const Events = () => {
         {showLogin && (
           <AdminLogin
             onLogin={handleAdminLogin}
-            onCancel={() => setShowLogin(false)}
+            onCancel={() => {
+              setShowLogin(false);
+              window.history.replaceState(null, '', window.location.pathname + window.location.search);
+            }}
           />
         )}
       </div>

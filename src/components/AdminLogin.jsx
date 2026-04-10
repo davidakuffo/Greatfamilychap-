@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
-import { supabase } from '../../supabaseClient';
+import { supabase } from '../lib/supabase';
+import { Lock, X, Eye, EyeOff } from 'lucide-react';
 
 const AdminLogin = ({ onLogin, onCancel }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -12,86 +14,75 @@ const AdminLogin = ({ onLogin, onCancel }) => {
     setLoading(true);
     setError('');
 
-    try {
-      const { error } = await supabase.auth.signInWithPassword({
-        email: email,
-        password: password
-      });
+    const { error } = await supabase.auth.signInWithPassword({ email, password });
 
-      if (error) throw error;
-
+    if (error) {
+      setError('Invalid email or password. Please try again.');
+    } else {
       onLogin();
-    } catch (error) {
-      console.error('Login error:', error);
-      setError(error.message || 'Login failed');
-    } finally {
-      setLoading(false);
     }
+    setLoading(false);
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white dark:bg-gray-800 rounded-xl p-8 shadow-2xl max-w-md w-full mx-4">
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6 text-center">
-          Admin Login
-        </h2>
+    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+      <div className="bg-white dark:bg-gray-900 rounded-2xl shadow-2xl w-full max-w-md p-8 relative">
+        <button onClick={onCancel} className="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+          <X size={20} />
+        </button>
+
+        <div className="flex justify-center mb-6">
+          <div className="bg-blue-100 dark:bg-blue-900 p-4 rounded-full">
+            <Lock className="text-blue-600 dark:text-blue-400" size={28} />
+          </div>
+        </div>
+
+        <h2 className="text-2xl font-bold text-center text-gray-800 dark:text-white mb-2">Admin Login</h2>
+        <p className="text-center text-gray-500 dark:text-gray-400 text-sm mb-8">Sign in to manage church events</p>
 
         {error && (
-          <div className="bg-red-100 dark:bg-red-900 border border-red-400 text-red-700 dark:text-red-200 px-4 py-3 rounded mb-4">
+          <div className="bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 rounded-lg p-3 mb-6 text-sm">
             {error}
           </div>
         )}
 
         <form onSubmit={handleLogin} className="space-y-4">
           <div>
-            <label className="block text-gray-700 dark:text-gray-300 font-medium mb-2">
-              Email
-            </label>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Email</label>
             <input
               type="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+              onChange={e => setEmail(e.target.value)}
               required
+              className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="admin@church.com"
             />
           </div>
-
           <div>
-            <label className="block text-gray-700 dark:text-gray-300 font-medium mb-2">
-              Password
-            </label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-              required
-            />
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Password</label>
+            <div className="relative">
+              <input
+                type={showPassword ? 'text' : 'password'}
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+                required
+                className="w-full px-4 py-3 rounded-xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="••••••••"
+              />
+              <button type="button" onClick={() => setShowPassword(!showPassword)}
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600">
+                {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+              </button>
+            </div>
           </div>
-
-          <div className="flex gap-4">
-            <button
-              type="submit"
-              disabled={loading}
-              className="flex-1 px-6 py-3 bg-primary text-accent font-semibold rounded-lg hover:opacity-95 transition-all disabled:opacity-50"
-            >
-              {loading ? 'Logging in...' : 'Login'}
-            </button>
-            <button
-              type="button"
-              onClick={onCancel}
-              className="px-6 py-3 bg-gray-500 text-white font-semibold rounded-lg hover:bg-gray-600 transition-all"
-            >
-              Cancel
-            </button>
-          </div>
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-semibold py-3 rounded-xl transition-colors duration-200"
+          >
+            {loading ? 'Signing in...' : 'Sign In'}
+          </button>
         </form>
-
-        <div className="mt-6 text-center text-sm text-gray-600 dark:text-gray-400">
-          <p>Demo credentials:</p>
-          <p>Email: admin@greatfamilychapel.com</p>
-          <p>Password: admin123</p>
-        </div>
       </div>
     </div>
   );
