@@ -7,7 +7,6 @@ import Contact_Us from './components/contact_Us'
 import Footer from './components/Footer'
 import Events from './components/Events'
 import Donate from './Donate'
-
 const App = () => {
 
   useEffect(() => {
