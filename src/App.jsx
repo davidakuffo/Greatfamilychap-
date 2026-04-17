@@ -7,6 +7,9 @@ import Contact_Us from './components/contact_Us'
 import Footer from './components/Footer'
 import Events from './components/Events'
 import Donate from './Donate'
+import PrivacyPolicy from './components/PrivacyPolicy'
+import TermsOfService from './components/Terms_Of_Service'
+
 const App = () => {
 
   useEffect(() => {
@@ -20,6 +23,26 @@ const App = () => {
     return (
       <div className='dark:bg-black relative'>
         <Donate />
+      </div>
+    )
+  }
+
+  if (path === '/privacy-policy') {
+    return (
+      <div className='dark:bg-black relative'>
+        <Navbar />
+        <PrivacyPolicy />
+        <Footer />
+      </div>
+    )
+  }
+
+  if (path === '/terms-of-service') {
+    return (
+      <div className='dark:bg-black relative'>
+        <Navbar />
+        <TermsOfService />
+        <Footer />
       </div>
     )
   }

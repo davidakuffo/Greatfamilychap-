@@ -143,10 +143,10 @@ const Footer = () => {
               © {currentYear} Great Family Chapel. All rights reserved.
             </p>
             <div className='flex gap-6 text-sm'>
-              <a href='#' className='text-gray-400 hover:text-white transition-colors duration-300'>
+              <a href='/privacy-policy' className='text-gray-400 hover:text-white transition-colors duration-300'>
                 Privacy Policy
               </a>
-              <a href='#' className='text-gray-400 hover:text-white transition-colors duration-300'>
+              <a href='/terms-of-service' className='text-gray-400 hover:text-white transition-colors duration-300'>
                 Terms of Service
               </a>
             </div>
