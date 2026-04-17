@@ -60,10 +60,10 @@ export default function PrivacyPolicy() {
         </h2>
         <p className="mt-3 text-gray-700 dark:text-gray-300">
           If you have any questions about this Privacy Policy, please contact us at{" "}
-          
+          <a
             href="mailto:info@greatfamilychapel.org"
-            className="text-blue-600 dark:text-blue-400 hover:underline
-          <a>
+            className="text-blue-600 dark:text-blue-400 hover:underline"
+          >
             info@greatfamilychapel.org
           </a>
         </p>

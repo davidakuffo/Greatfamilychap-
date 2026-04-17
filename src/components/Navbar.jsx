@@ -4,16 +4,16 @@ import assets from '../assets/assets'
 const Navbar = () => {
 
   const [sidebarOpen, setSidebarOpen] = useState(false)
-  const isDonatePage =
+  const isSubPage =
     typeof window !== 'undefined' &&
-    window.location.pathname.startsWith('/donate')
+    window.location.pathname !== '/'
 
   const handleNavClick = (anchor) => {
     setSidebarOpen(false)
 
-    // If we're on the donate page, always navigate back to the home page + anchor.
-    // (Donate is a separate view with no section anchors.)
-    if (isDonatePage) {
+    // If we're on a sub-page (like Donate or Privacy Policy), 
+    // navigate back to the home page with the anchor.
+    if (isSubPage) {
       const normalizedAnchor = anchor.startsWith('#') ? anchor : `#${anchor}`
       window.location.href = `/${normalizedAnchor}`
     }
@@ -36,11 +36,11 @@ const Navbar = () => {
         </svg>
       </button>
 
-      <a onClick={() => handleNavClick('#hero')} href={isDonatePage ? '/#hero' : '#hero'} className='sm:hover:border-b'>Home</a>
-      <a onClick={() => handleNavClick('#about')} href={isDonatePage ? '/#about' : '#about'} className='sm:hover:border-b'>About Us</a>
-      <a onClick={() => handleNavClick('#events')} href={isDonatePage ? '/#events' : '#events'} className='sm:hover:border-b'>Events</a>
-      <a onClick={() => handleNavClick('#services')} href={isDonatePage ? '/#services' : '#services'} className='sm:hover:border-b'>Services</a>
-      <a onClick={() => handleNavClick('#contact')} href={isDonatePage ? '/#contact' : '#contact'} className='sm:hover:border-b'>Contact Us</a>
+      <a onClick={() => handleNavClick('#hero')} href={isSubPage ? '/#hero' : '#hero'} className='sm:hover:border-b'>Home</a>
+      <a onClick={() => handleNavClick('#about')} href={isSubPage ? '/#about' : '#about'} className='sm:hover:border-b'>About Us</a>
+      <a onClick={() => handleNavClick('#events')} href={isSubPage ? '/#events' : '#events'} className='sm:hover:border-b'>Events</a>
+      <a onClick={() => handleNavClick('#services')} href={isSubPage ? '/#services' : '#services'} className='sm:hover:border-b'>Services</a>
+      <a onClick={() => handleNavClick('#contact')} href={isSubPage ? '/#contact' : '#contact'} className='sm:hover:border-b'>Contact Us</a>
 
       {/* Mobile Donate button inside sidebar */}
       <a href='/donate' onClick={()=> setSidebarOpen(false)} className='sm:hidden mt-6 w-full flex items-center justify-center gap-2 bg-primary text-white px-6 py-3 rounded-full cursor-pointer hover:scale-103 transition-all'>
