@@ -149,7 +149,7 @@ const Contact_Us = () => {
   const formFields = [
     { label: 'Full Name *', name: 'name', type: 'text', placeholder: 'John Doe', required: true },
     { label: 'Email Address *', name: 'email', type: 'email', placeholder: 'john@example.com', required: true },
-    { label: 'Phone Number', name: 'phone', type: 'tel', placeholder: '+233 24 123 4567', required: false },
+    { label: 'Phone Number', name: 'phone', type: 'tel', placeholder: '+233 54 967 5793', required: false },
     { label: 'Subject *', name: 'subject', type: 'text', placeholder: 'Prayer Request / General Inquiry', required: true },
   ]
 
