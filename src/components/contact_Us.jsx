@@ -101,7 +101,7 @@ const Contact_Us = () => {
         </svg>
       ),
       title: 'Phone',
-      info: '+233595227711',
+      info: '+233 54 967 5793  +233 53 118 0769',
     },
     {
       icon: (
@@ -110,7 +110,7 @@ const Contact_Us = () => {
         </svg>
       ),
       title: 'Email',
-      info: 'greatfamilychapel@gmail.com',
+      info: 'greatfamilychapelapp@gmail.com',
     },
     {
       icon: (
@@ -149,7 +149,7 @@ const Contact_Us = () => {
   const formFields = [
     { label: 'Full Name *', name: 'name', type: 'text', placeholder: 'John Doe', required: true },
     { label: 'Email Address *', name: 'email', type: 'email', placeholder: 'john@example.com', required: true },
-    { label: 'Phone Number', name: 'phone', type: 'tel', placeholder: '+233 54 967 5793', required: false },
+    { label: 'Phone Number', name: 'phone', type: 'tel', placeholder: '+233 54 967 5793 or +233 53 118 0769', required: false },
     { label: 'Subject *', name: 'subject', type: 'text', placeholder: 'Prayer Request / General Inquiry', required: true },
   ]
 
