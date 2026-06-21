@@ -35,10 +35,26 @@ const Events = () => {
       }
     };
 
+    const handleKeyDown = (event) => {
+      const isAdminShortcut =
+        (event.ctrlKey || event.metaKey) &&
+        event.shiftKey &&
+        event.key.toLowerCase() === 'a';
+
+      if (isAdminShortcut) {
+        event.preventDefault();
+        setShowLogin(true);
+      }
+    };
+
     handleHashChange();
     window.addEventListener('hashchange', handleHashChange);
+    window.addEventListener('keydown', handleKeyDown);
 
-    return () => window.removeEventListener('hashchange', handleHashChange);
+    return () => {
+      window.removeEventListener('hashchange', handleHashChange);
+      window.removeEventListener('keydown', handleKeyDown);
+    };
   }, []);
 
   const fetchEvents = async () => {
