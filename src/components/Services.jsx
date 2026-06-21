@@ -132,7 +132,7 @@ const Services = () => {
             transition={{ duration: 0.6 }}
             className='text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white mb-4'
           >
-            Our Services
+            Our Weekly Services
           </motion.h2>
 
           <motion.div

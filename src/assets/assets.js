@@ -1,12 +1,8 @@
 import logo from "./GFC LOGO.PNG";
 import arrow_icon from "./arrow_icon.svg";
-import group_profile from "./group_profile.png";
 import bgImage1 from "./bgImage1.png";
 import bgImage2 from "./bgImage2.png";
-import hero_img from "./hero_img.png";
 import img_8872 from "./IMG_8872.JPG";
-import microsoft_logo from "./microsoft_logo.png";
-import zoom_logo from "./zoom_logo.png";
 import rakuten_logo from "./rakuten_logo.png";
 import coinbase_logo from "./coinbase_logo.png";
 import ads_icon from "./ads_icon.svg";
@@ -15,9 +11,6 @@ import marketing_icon from "./marketing_icon.svg";
 import social_icon from "./social_icon.svg";
 import menu_icon from "./menu_icon.svg";
 import close_icon from "./close_icon.svg";
-import work_mobile_app from "./work_mobile_app.png";
-import work_fitness_app from "./work_fitness_app.png";
-import work_dashboard_management from "./work_dashboard_management.png";
 import email_icon from "./email_icon.svg";
 import person_icon from "./person_icon.svg";
 import facebook_icon from "./facebook_icon.svg";
@@ -39,8 +32,6 @@ import prophetic_service from "./prophetic_service.jpeg";
 import destiny_encounter from "./destiny_encounter.jpeg";
 
 export const company_logos = [
-  microsoft_logo,
-  zoom_logo,
   rakuten_logo,
   coinbase_logo,
   airbnb_logo,
@@ -50,10 +41,8 @@ export const company_logos = [
 const assets = {
   logo,
   arrow_icon,
-  group_profile,
   bgImage1,
   bgImage2,
-  hero_img,
   img_8872,
   ads_icon,
   content_icon,
@@ -61,9 +50,6 @@ const assets = {
   social_icon,
   menu_icon,
   close_icon,
-  work_mobile_app,
-  work_fitness_app,
-  work_dashboard_management,
   email_icon,
   person_icon,
   facebook_icon,

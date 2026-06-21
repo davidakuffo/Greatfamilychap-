@@ -8,6 +8,8 @@ const Footer = () => {
     { name: 'Home', href: isSubPage ? '/#hero' : '#hero' },
     { name: 'About Us', href: isSubPage ? '/#about' : '#about' },
     { name: 'Services', href: isSubPage ? '/#services' : '#services' },
+    { name: 'Sermons', href: isSubPage ? '/#sermons' : '#sermons' },
+    { name: 'Gallery', href: isSubPage ? '/#gallery' : '#gallery' },
     { name: 'Contact', href: isSubPage ? '/#contact' : '#contact' }
   ]
 
