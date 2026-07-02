@@ -56,7 +56,7 @@ const Services = () => {
       day: 'Tuesday',
       title: 'Commanding The Morning',
       time: '6:30 AM - 8:30 AM',
-      description: "Join us for an evening of powerful prayer, in-depth Bible study, and spiritual growth. A time to deepen your understanding of God's Word.",
+      description: "Join us for an morning of powerful prayer, in-depth Bible study, and spiritual growth. A time to deepen your understanding of God's Word.",
       image: commanding_morning,
       color: 'blue',
     },
