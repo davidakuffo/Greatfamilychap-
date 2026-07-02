@@ -6,6 +6,7 @@ import Services from './components/Services'
 import Contact_Us from './components/contact_Us'
 import Footer from './components/Footer'
 import Events from './components/Events'
+import Sermons from './components/Sermons'
 import Donate from './Donate'
 import PrivacyPolicy from './components/PrivacyPolicy'
 import TermsOfService from './components/Terms_Of_Service'
@@ -53,6 +54,7 @@ const App = () => {
       <Hero />
       <About_Us />
       <Services />
+      <Sermons />
       <Events />
       <Contact_Us />
       <Footer />

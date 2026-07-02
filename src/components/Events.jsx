@@ -69,48 +69,7 @@ const Events = () => {
       setEvents(data || []);
     } catch (error) {
       console.error('Error fetching events:', error);
-      // Fallback to default events if Supabase fails
-      setEvents([
-        {
-          id: 1,
-          title: 'Sunday Worship Service',
-          start_date: '2025-01-05',
-          end_date: '2025-01-05',
-          start_time: '09:00',
-          end_time: '11:00',
-          location: 'Main Sanctuary',
-          category: 'worship',
-          description: 'Join us for inspiring worship, powerful teaching, and community fellowship.',
-          attendees: '200+',
-          image_url: null
-        },
-        {
-          id: 2,
-          title: 'Youth Night',
-          start_date: '2025-01-10',
-          end_date: '2025-01-10',
-          start_time: '18:00',
-          end_time: '',
-          location: 'Youth Center',
-          category: 'youth',
-          description: 'An evening of worship, games, and Bible study for ages 13-18.',
-          attendees: '50+',
-          image_url: null
-        },
-        {
-          id: 3,
-          title: 'Prayer Meeting',
-          start_date: '2025-01-12',
-          end_date: '2025-01-12',
-          start_time: '19:00',
-          end_time: '',
-          location: 'Prayer Room',
-          category: 'prayer',
-          description: 'Come together as we lift our prayers and seek God\'s presence.',
-          attendees: '30+',
-          image_url: null
-        }
-      ]);
+      setEvents([]);
     } finally {
       setLoading(false);
     }
