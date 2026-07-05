@@ -105,8 +105,8 @@ const Sermons = () => {
                 className='bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-3xl p-8 shadow-sm hover:shadow-xl transition-all duration-300'
               >
                 {sermon.image_url && (
-                  <div className='w-full h-40 rounded-2xl overflow-hidden mb-6'>
-                    <img src={sermon.image_url} alt={sermon.title} className='w-full h-full object-cover' />
+                  <div className='w-full h-64 rounded-2xl overflow-hidden mb-6 flex items-center justify-center bg-gray-100 dark:bg-gray-900'>
+                    <img src={sermon.image_url} alt={sermon.title} className='max-w-full max-h-full object-contain' />
                   </div>
                 )}
                 <p className='text-sm uppercase tracking-[0.35em] text-secondary mb-4'>Sermon</p>

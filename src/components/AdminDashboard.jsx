@@ -190,7 +190,8 @@ const AdminDashboard = ({ onLogout }) => {
   const handleSermonAudioChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
-    if (file.size > 50 * 1024 * 1024) { showToast('Audio must be under 50MB', 'error'); return; }
+    // Allow larger sermon uploads (200MB)
+    if (file.size > 200 * 1024 * 1024) { showToast('Audio must be under 200MB', 'error'); return; }
     const allowed = ['audio/mpeg', 'audio/mp3', 'audio/wav', 'audio/x-wav', 'audio/mp4', 'audio/x-m4a', 'audio/aac'];
     if (!allowed.includes(file.type)) { showToast('Please upload an MP3, WAV, M4A, or AAC file', 'error'); return; }
     setSermonAudioFile(file);
@@ -702,7 +703,7 @@ const AdminDashboard = ({ onLogout }) => {
                     ) : (
                       <>
                         <p className="text-sm font-medium text-gray-700 dark:text-gray-300">Click to upload audio</p>
-                        <p className="text-xs text-gray-400">MP3, WAV, M4A up to 50MB</p>
+                        <p className="text-xs text-gray-400">MP3, WAV, M4A up to 200MB</p>
                       </>
                     )}
                   </div>
