@@ -39,7 +39,7 @@ const Navbar = () => {
       <a onClick={() => handleNavClick('#hero')} href={isSubPage ? '/#hero' : '#hero'} className='sm:hover:border-b'>Home</a>
       <a onClick={() => handleNavClick('#about')} href={isSubPage ? '/#about' : '#about'} className='sm:hover:border-b'>About Us</a>
       <a onClick={() => handleNavClick('#services')} href={isSubPage ? '/#services' : '#services'} className='sm:hover:border-b'>Services</a>
-      <a onClick={() => handleNavClick('#gallery')} href={isSubPage ? '/#gallery' : '#gallery'} className='sm:hover:border-b'>Gallery</a>
+      {/*<a onClick={() => handleNavClick('#gallery')} href={isSubPage ? '/#gallery' : '#gallery'} className='sm:hover:border-b'>Gallery</a>*/}
       <a onClick={() => handleNavClick('#sermons')} href={isSubPage ? '/#sermons' : '#sermons'} className='sm:hover:border-b'>Sermons</a>
       <a onClick={() => handleNavClick('#events')} href={isSubPage ? '/#events' : '#events'} className='sm:hover:border-b'>Events</a>
       <a onClick={() => handleNavClick('#contact')} href={isSubPage ? '/#contact' : '#contact'} className='sm:hover:border-b'>Contact Us</a>
