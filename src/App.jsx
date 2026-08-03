@@ -18,7 +18,32 @@ const App = () => {
     document.documentElement.classList.add('dark')
   }, [])
 
-  const path = typeof window !== 'undefined' ? window.location.pathname : '/'
+  const path = typeof window !== 'undefined'
+    ? decodeURIComponent(window.location.pathname)
+    : '/'
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return
+
+    const sectionMap = {
+      '/Home': 'hero',
+      '/about-us': 'about',
+      '/Services': 'services',
+      '/Sermons': 'sermons',
+      '/Events': 'events',
+      '/contact-us': 'contact',
+    }
+
+    const targetSection = sectionMap[path]
+    if (!targetSection) return
+
+    const sectionEl = document.getElementById(targetSection)
+    if (sectionEl) {
+      requestAnimationFrame(() => {
+        sectionEl.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      })
+    }
+  }, [path])
 
   if (path === '/donate') {
     return (

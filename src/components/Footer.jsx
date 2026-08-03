@@ -5,12 +5,12 @@ const Footer = () => {
   const isSubPage = typeof window !== 'undefined' && window.location.pathname !== '/'
 
   const quickLinks = [
-    { name: 'Home', href: isSubPage ? '/#hero' : '#hero' },
-    { name: 'About Us', href: isSubPage ? '/#about' : '#about' },
-    { name: 'Services', href: isSubPage ? '/#services' : '#services' },
-    { name: 'Gallery', href: isSubPage ? '/gallery' : '#gallery' },
-    { name: 'Events', href: isSubPage ? '/#events' : '#events' },
-    { name: 'Contact', href: isSubPage ? '/#contact' : '#contact' }
+    { name: 'Home', href: '/Home' },
+    { name: 'About Us', href: '/about-us' },
+    { name: 'Services', href: '/Services' },
+    { name: 'Gallery', href: '/gallery' },
+    { name: 'Events', href: '/Events' },
+    { name: 'Contact', href: '/contact-us' }
   ]
 
   const ministries = [

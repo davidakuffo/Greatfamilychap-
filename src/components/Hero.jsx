@@ -103,7 +103,7 @@ const Hero = () => {
           transition={{ duration: 0.6 }}
         >
           <motion.a
-            href='#about'
+            href='/about-us'
             whileHover={{ scale: 1.06, y: -3 }}
             whileTap={{ scale: 0.96 }}
             transition={{ duration: 0.2 }}

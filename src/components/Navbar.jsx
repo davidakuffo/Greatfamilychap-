@@ -4,18 +4,37 @@ import assets from '../assets/assets'
 const Navbar = () => {
 
   const [sidebarOpen, setSidebarOpen] = useState(false)
-  const isSubPage =
-    typeof window !== 'undefined' &&
-    window.location.pathname !== '/'
+  const currentPath =
+    typeof window !== 'undefined'
+      ? decodeURIComponent(window.location.pathname)
+      : '/'
 
-  const handleNavClick = (anchor) => {
+  const isSubPage =
+    currentPath !== '/' &&
+    !['/Home', '/about-us', '/Services', '/Sermons', '/Events', '/contact-us'].includes(currentPath)
+
+  const navLinks = [
+    { label: 'Home', path: '/Home', section: 'hero' },
+    { label: 'About Us', path: '/about-us', section: 'about' },
+    { label: 'Services', path: '/Services', section: 'services' },
+    { label: 'Sermons', path: '/Sermons', section: 'sermons' },
+    { label: 'Events', path: '/Events', section: 'events' },
+    { label: 'Contact Us', path: '/contact-us', section: 'contact' },
+  ]
+
+  const handleNavClick = (path, section) => {
     setSidebarOpen(false)
 
-    // If we're on a sub-page (like Donate or Privacy Policy), 
-    // navigate back to the home page with the anchor.
     if (isSubPage) {
-      const normalizedAnchor = anchor.startsWith('#') ? anchor : `#${anchor}`
-      window.location.href = `/${normalizedAnchor}`
+      window.location.href = path
+      return
+    }
+
+    window.history.pushState({}, '', path)
+
+    const sectionEl = document.getElementById(section)
+    if (sectionEl) {
+      sectionEl.scrollIntoView({ behavior: 'smooth', block: 'start' })
     }
   }
 
@@ -36,13 +55,19 @@ const Navbar = () => {
         </svg>
       </button>
 
-      <a onClick={() => handleNavClick('#hero')} href={isSubPage ? '/#hero' : '#hero'} className='sm:hover:border-b'>Home</a>
-      <a onClick={() => handleNavClick('#about')} href={isSubPage ? '/#about' : '#about'} className='sm:hover:border-b'>About Us</a>
-      <a onClick={() => handleNavClick('#services')} href={isSubPage ? '/#services' : '#services'} className='sm:hover:border-b'>Services</a>
-      {/*<a onClick={() => handleNavClick('#gallery')} href={isSubPage ? '/#gallery' : '#gallery'} className='sm:hover:border-b'>Gallery</a>*/}
-      <a onClick={() => handleNavClick('#sermons')} href={isSubPage ? '/#sermons' : '#sermons'} className='sm:hover:border-b'>Sermons</a>
-      <a onClick={() => handleNavClick('#events')} href={isSubPage ? '/#events' : '#events'} className='sm:hover:border-b'>Events</a>
-      <a onClick={() => handleNavClick('#contact')} href={isSubPage ? '/#contact' : '#contact'} className='sm:hover:border-b'>Contact Us</a>
+      {navLinks.map((link) => (
+        <a
+          key={link.label}
+          onClick={(e) => {
+            e.preventDefault()
+            handleNavClick(link.path, link.section)
+          }}
+          href={link.path}
+          className='sm:hover:border-b'
+        >
+          {link.label}
+        </a>
+      ))}
 
       {/* Mobile Donate button inside sidebar */}
       <a href='/donate' onClick={()=> setSidebarOpen(false)} className='sm:hidden mt-6 w-full flex items-center justify-center gap-2 bg-primary text-white px-6 py-3 rounded-full cursor-pointer hover:scale-103 transition-all'>
