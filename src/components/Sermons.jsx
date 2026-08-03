@@ -35,7 +35,6 @@ const Sermons = () => {
         .from('sermons')
         .select('*')
         .order('sermon_date', { ascending: false })
-        .limit(3)
 
       if (error) throw error
       setSermons(data || [])
