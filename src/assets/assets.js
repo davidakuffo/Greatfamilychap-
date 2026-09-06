@@ -30,7 +30,7 @@ import Papa from "./Papa.jpg";
 import commanding_morning from "./commanding_morning.jpeg";
 import prophetic_service from "./prophetic_service.jpeg";
 import destiny_encounter from "./destiny_encounter.jpeg";
-
+import picture1 from "./Picture1.png";
 export const company_logos = [
   rakuten_logo,
   coinbase_logo,
@@ -67,6 +67,7 @@ const assets = {
   prophetic_service,
   commanding_morning,
   destiny_encounter,
+  picture1,
 };
 
 export default assets;
